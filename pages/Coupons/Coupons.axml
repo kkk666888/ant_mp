@@ -1,0 +1,17 @@
+<view class="Coupons">
+  <tabs tabs="{{ tabs }}" tabBarUnderlineColor="#FFDA29" tabBarInactiveTextColor="#333" onTabClick="handleTabClick" swipeable="{{false}}" activeCls="tabActive" activeTab="{{ activeTab }}">
+    <block a:for="{{ tabs }}">
+      <tab-content key="{{ index }}">
+        <view class="tab-content">
+          <view class="instruction">
+            <text  onTap="couponInstruction">使用说明
+              <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="aspectFit" />
+            </text>
+          </view>
+          <custom-card a:for="{{item.cards}}" a:for-item="card" amount="{{card.faceNumber}}" title="{{card.couponShortName}}" subTitle="{{card.rulesShortMsg}}" key="{{index}}" status="{{card.available}}" type="{{card.operation}}" buttonText="{{card.buttonText}}" footer="{{card.footer}}" id="{{card.id}}"  onTap="clickCard"></custom-card>
+        </view>
+      </tab-content>
+    </block>
+  </tabs>
+  <info-alert dialogTitle="{{toastTitle}}" dialogContent="{{toastContent}}" onHideBtnClick="onHideToastClick" a:if="{{showToast}}"/>
+</view>

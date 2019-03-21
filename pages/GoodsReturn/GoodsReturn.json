@@ -1,0 +1,6 @@
+{
+  "defaultTitle": "归还",
+  "usingComponents": {
+    "success-toast": "/component/SuccessToast/SuccessToast"
+  }
+}

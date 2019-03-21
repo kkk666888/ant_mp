@@ -1,0 +1,317 @@
+@import './../../common/fontIcon/iconfont.acss';
+/*整个页面*/
+.orderSubmit {
+  width: 100%;
+  height: 100%;
+  background: #f7f7f7;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', SimSun, sans-serif;
+}
+/*公用部分*/
+.blackMediaFont {
+  color: #000000;
+  font-size: 28rpx;
+}
+/*用户面板*/
+.userPlane {
+  background: white;
+  border-bottom: 10rpx solid #ffda29;
+  padding: 40rpx 30rpx 30rpx 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.userPlane-name {
+  color: #000000;
+  font-size: 32rpx;
+  margin-right: 40rpx;
+}
+
+.userPlane-phone {
+  color: #000000;
+  font-size: 32rpx;
+}
+
+.userplane-second {
+  margin-bottom: 20rpx;
+  margin-top: 10rpx;
+  display: flex;
+}
+
+.userplane-address-icon {
+  width: 20rpx;
+  height: 20rpx;
+  margin-right: 16rpx;
+}
+
+.userplane-address {
+  font-size: 28rpx;
+  line-height: 40rpx;
+  color: #888888;
+}
+
+.userplane-reminder {
+  color: #999999;
+  font-size: 20rpx;
+  margin-top: 20rpx;
+}
+
+/*商品详情面板*/
+.goodsPlane {
+  padding: 40rpx 30rpx;
+  display: flex;
+  background: white;
+  margin-bottom: 20rpx;
+}
+
+.goodsImageBox {
+  width: 160rpx;
+  height: 160rpx;
+  margin-right: 20rpx;
+}
+
+.goodsImage {
+  background-color: #eeeeee;
+  width: 160rpx;
+  height: 160rpx;
+}
+
+.goodsfullname {
+  color: #000000;
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+}
+
+/*可能有多行文本 + 2rpx行距*/
+.goods-category {
+  margin-bottom: 16rpx;
+  font-size: 24rpx;
+  line-height: 30rpx;
+  color: #999999;
+}
+
+.goods-rentday {
+  color: #000000;
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+}
+
+.goods-zima {
+  color: #1ccfc9;
+  font-size: 20rpx;
+  line-height: 20rpx;
+  border: 1rpx solid #1ccfc9;
+  padding: 5rpx 10rpx;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/*费用列表面板*/
+.feePlane {
+  background: white;
+  margin-bottom: 318rpx;
+}
+
+.fee-section1 {
+  border-bottom: 1rpx solid #dddddd;
+  padding: 40rpx 30rpx 40rpx 30rpx;
+}
+
+.fee-section2 {
+  padding: 40rpx 30rpx 40rpx 30rpx;
+}
+
+.flexBox {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+  align-items:baseline;
+  flex-wrap: wrap;
+}
+
+.fee-black-font-left {
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #333333;
+}
+
+.fee-black-font-right {
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #262626;
+}
+
+.fee-gray-font {
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #999999;
+}
+
+.fee-reminder {
+  color: #999999;
+  font-size: 24rpx;
+  line-height: 24rpx;
+}
+
+.feeplane-infoText {
+  margin-left: 8rpx;
+  color: #999999;
+  width: 52rpx;
+  height: 32rpx;
+}
+
+.feeplane-infoicon {
+  position: relative;
+  top: 4rpx;
+  color: #999999;
+  width: 32rpx;
+  height: 32rpx;
+}
+
+/*用户注册协议以及确认订单的按钮*/
+.menuPlane {
+  position: fixed;
+  left: 0rpx;
+  right: 0rpx;
+  bottom: 0rpx;
+  padding: 40rpx 30rpx;
+  background: white;
+  border-top: 1rpx solid #dddddd;
+}
+
+.readProtocolPlane {
+  position: absolute;
+  top: -62rpx;
+  left: 30rpx;
+}
+
+.readProtocolPlanebgImage {
+  width: 314rpx;
+  height: 81rpx;
+  position: absolute;
+}
+
+.readProtocolPlane-top {
+  padding: 18rpx 40rpx 18rpx 39rpx;
+  font-size: 26rpx;
+  color: white;
+  line-height: 37rpx;
+  background: rgba(53, 57, 75, 1);
+  border-radius: 6rpx;
+  opacity: 0.9;
+}
+
+.readProtocolPlane-triangle {
+  position: relative;
+  left: 17rpx;
+  background: rgba(53, 57, 75, 1);
+  width: 8rpx;
+  height: 8rpx;
+  transform: rotate(90deg);
+}
+
+.canvasElement {
+  position: relative;
+  width: 300rpx;
+  height: 100rpx;
+}
+
+.menuplane-sectionAgree {
+  display: flex;
+  margin-bottom: 40rpx;
+  background: white;
+}
+
+.checkbox-div {
+  margin-right: 16rpx;
+}
+
+.checkBox-img {
+  position: relative;
+  top: 2rpx;
+  width: 44rpx;
+  height: 44rpx;
+}
+
+.protocol-div {
+  font-size: 28rpx;
+  line-height: 44rpx;
+}
+
+.menuplane-sectionbutton {
+  background: white;
+}
+
+.submitBtn {
+  background: #ffda29;
+  border-radius: 44rpx;
+  font-size: 36rpx;
+  border: none;
+  height: 88rpx;
+  line-height: 90rpx;
+}
+
+.submitBtnHL {
+  background: rgba(255, 196, 0, 0.4);
+  border-radius: 44rpx;
+  font-size: 36rpx;
+  border: none;
+  height: 88rpx;
+  line-height: 90rpx;
+}
+
+.protocolText {
+  color: #108ee9;
+}
+
+.arrow-right {
+  width: 26rpx;
+  height: 26rpx;
+  vertical-align: -2rpx;
+  margin-right: -20rpx;
+}
+.line-through {
+  text-decoration: line-through;
+}
+
+/* 优惠券 */
+.am-popup-content {
+  max-height: 900rpx;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.coupons {
+  background: #fff;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+  position: relative;
+  max-height: 900rpx;
+}
+.close-img {
+  width: 30rpx;
+  height: 30rpx;
+  position: absolute;
+  top: 30rpx;
+  right: 30rpx;
+  z-index: 1;
+}
+
+.coupons .am-card::before {
+  background: #fff;
+}
+.coupons .am-card::after {
+  background: #fff;
+}
+.coupons-title {
+  font-size: 32rpx;
+  line-height: 45rpx;
+  margin: 30rpx;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal_open {
+  position: fixed;
+  height: 100%;
+}

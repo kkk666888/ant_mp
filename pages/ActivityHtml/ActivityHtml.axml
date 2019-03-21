@@ -1,0 +1,3 @@
+<view class="ActivityHtml">
+  <web-view src="{{url}}" onMessage="msgFromWeb"></web-view>
+</view>

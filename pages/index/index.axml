@@ -1,0 +1,58 @@
+<view class="page-index">
+    <!-- 关注生活号组件 -->
+    <lifestyle a:if="{{canIUseLifestyle}}" publicId="2018110261973355"/>
+  <view class="swiper-section">
+    <swiper
+      indicator-dots="{{indicatorDots}}"
+      autoplay="{{autoplay}}"
+      vertical="{{vertical}}"
+      interval="{{interval}}"
+      circular="{{circular}}"
+    >
+      <block a:for="{{ bannerData }}">
+        <swiper-item>
+          <view class="swiper-item" onTap="bannerClick" data-idx="{{ index }}">
+            <image src="{{ item.imgUrl }}"></image>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <view class="rent-process">
+    <view class="process-head">租机流程</view>
+    <view class="rent-process-img">
+      <image src="/image/index/brief.png" mode="widthFix"></image>
+    </view>
+  </view>
+  <!-- <view >{{ testDataLoad }} | {{ testDataShow }} | {{ testDataReady }} | {{ testDataHide }} | {{ testDataUnload }}</view> -->
+  <view class="goods">
+    <view class="goods-tab clear-float">
+      <view class="tab-item" a:for="{{tabMenu}}" data-idx="{{index}}" onTap="switchTab">
+        <text class="{{item.class}}">{{ item.txt }}</text>
+      </view>
+    </view>
+    <view class="goods-item clear-float" a:for="{{ tabDetail }}" a:for-index="index0" a:for-item="item0" a:if="{{item0.goods.length > 0}}">
+      <view class="item-head">
+        <view>{{ item0.head }}</view>
+      </view>
+      <view class="item-con" a:for="{{item0.goods}}" data-idx="{{index0 + '_' + index +'_' + 2}}" onTap="goToDetail">
+        <view class="con-img">
+          <image src="{{item.img}}"></image>
+          <text class="list-label {{item.datas.commodityListTagPosition}}">{{item.datas.commodityListTag}}</text>
+        </view>
+        <view class="con-detail">{{ item.detail }}</view>
+        <view class="con-price">
+          <view class="price-symbol">¥</view>
+          <view class="price-num">{{ item.price }}/天</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="footer-img" onTap="activityClick">
+      <image src="/image/index/foot.png" mode="widthFix"></image>
+  </view>
+  <view class="footer">— 本租赁服务由深圳金达数据科技有限公司提供 —</view>
+  <view class="service-icon" >
+    <contact-button size="50" tnt-inst-id="HLATCNCN" scene="SCE00007449" icon="/image/kf.png"/>
+  </view>
+</view>

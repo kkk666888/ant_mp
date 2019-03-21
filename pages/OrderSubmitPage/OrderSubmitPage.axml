@@ -1,0 +1,192 @@
+<view class=" {{isScroll === 'Y' ? 'modal_open orderSubmit' : 'orderSubmit'}}">
+  <!--用户信息面板-->
+  <view class="userPlane">
+    <view style="display: flex" class="blackMediaFont">
+      <view class="userPlane-name">{{receiverName}}
+      </view>
+      <view class="userPlane-phone">{{receiverTel}}
+      </view>
+    </view>
+    <view class="userplane-second">
+      <view class="userplane-address-icon">
+        <image src="/image/orderSubmit/destination_3x.png" class="userplane-address-icon" />
+      </view>
+      <view>
+        <view class="userplane-address">{{consigneeAddr}}
+        </view>
+        <view class="userplane-reminder blackMediaFont">如需修改地址，请取消订单，重新下单并在信用套餐页面进行修改
+        </view>
+      </view>
+    </view>
+  </view>
+  <!--商品详情面板-->
+  <view class="goodsPlane">
+    <view class="goodsImageBox">
+      <image class="goodsImage" mode="scaleToFill" src="{{goodsDetail.listImg}}" />
+    </view>
+    <view>
+      <view class="goodsfullname">{{goodsDetail.fullName}}
+      </view>
+      <view class="goods-category">规格：{{goodsDetail.specContentList}}
+      </view>
+      <view class="goods-rentday">租金：¥{{goodsDetail.dayAvgRentAmt}}/天
+      </view>
+      <text class="goods-zima" a:if="{{orderCreditAmtShow}}">芝麻信用·免押金
+      </text>
+    </view>
+  </view>
+  <!--费用列表-->
+  <view class="feePlane">
+    <!--section1-->
+    <view class="fee-section1">
+      <view class="flexBox">
+        <view class="flexLeft fee-black-font-left fee-gray-font">每日租金
+        </view>
+        <view class="flexRight fee-black-font-right fee-gray-font">￥{{feeDetail.dayAvgRentAmt}}
+        </view>
+      </view>
+      <view class="flexBox">
+        <view class="flexLeft fee-gray-font">租期
+        </view>
+        <view class="flexRight fee-gray-font">{{feeDetail.totalDays}}天
+        </view>
+      </view>
+      <view class="flexBox">
+        <view class="flexLeft">结算方式
+        </view>
+        <view class="flexRight">{{feeDetail.payStyleStr}}
+        </view>
+      </view>
+      <!--费用列表部分-->
+      <view>
+        <view class="flexBox" a:for="{{feeDetail.serviceList}}" a:for-index="idx" a:for-item="feeItem">
+          <view class="flexLeft fee-gray-font">
+            <text>{{feeItem.feeName}}
+            </text>
+            <text data-feeItem="{{feeItem}}" onTap="feeIconClick" class="feeplane-infoText">
+              <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="aspectFit" />
+            </text>
+          </view>
+          <view class="flexRight fee-gray-font">{{feeItem.feeValue}}
+          </view>
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{defaultCoupon}}" onTap="chooseCoupon">
+        <view class="flexLeft">
+          <text class="fee-black-font-left">优惠券
+          </text>
+        </view>
+        <view class="flexRight fee-black-font-right">-￥{{defaultCoupon.couponDeductResponse.deductAmt}}
+          <image class="arrow-right" src="/image/arrowright.png"></image>
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{defaultCoupon}}">
+        <view class="flexLeft">
+          <text class="fee-black-font-left fee-gray-font">首期应付
+          </text>
+          <text data-feeItem="{{feeItem}}" onTap="firstBillIconClick" class="feeplane-infoText">
+            <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="aspectFit" />
+          </text>
+        </view>
+        <view class="flexRight fee-black-font-right"><text class="fee-gray-font line-through">￥{{feeDetail.totalMoney}}</text>￥{{currentMoney}}
+        </view>
+      </view>
+      <view class="flexBox" a:else>
+        <view class="flexLeft">
+          <text class="fee-black-font-left">首期应付
+          </text>
+          <text data-feeItem="{{feeItem}}" onTap="firstBillIconClick" class="feeplane-infoText">
+            <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="aspectFit" />
+          </text>
+        </view>
+        <view class="flexRight fee-black-font-right">￥{{feeDetail.totalMoney}}
+        </view>
+      </view>
+      <view class="flexBox" style="margin-bottom: 10rpx">
+        <view class="flexLeft fee-gray-font">租金付款方式
+        </view>
+        <view class="flexRight">
+          <text class="fee-gray-font">支付宝免密支付
+          </text>
+          <text data-feeItem="{{feeItem}}" onTap="alipayIconClick" class="feeplane-infoText">
+            <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="aspectFit" />
+          </text>
+        </view>
+      </view>
+      <text class="fee-reminder">如未完成订单，支付宝免密支付将在30分钟后自动取消
+      </text>
+    </view>
+    <view class="fee-section2">
+      <view class="flexBox" a:if="{{depositAmtShow}}">
+        <view class="flexLeft fee-gray-font">总押金
+        </view>
+        <view class="flexRight fee-gray-font">¥{{feeDetail.orderDepositAmt}}
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{orderCreditAmtShow}}">
+        <view class="flexLeft fee-black-font-left">芝麻信用免押金
+        </view>
+        <view class="flexRight fee-black-font-right">-¥{{feeDetail.orderCreditAmt}}
+        </view>
+      </view>
+      <view class="flexBox">
+        <view class="flexLeft fee-black-font-left">需冻结押金
+        </view>
+        <view class="flexRight fee-black-font-right">¥{{feeDetail.payDepositAmt}}
+        </view>
+      </view>
+      <view class="flexBox" style="margin-bottom: 0" a:if="{{aliPayShow}}">
+        <view class="flexLeft fee-gray-font">押金冻结方式
+        </view>
+        <view class="flexRight">
+          <text class="fee-gray-font">支付宝资金授权
+          </text>
+          <text data-feeItem="{{feeItem}}" onTap="alipayAccreditClick" class="feeplane-infoText">
+            <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="aspectFit" />
+          </text>
+          <!--<text class="icon iconfont icon-bangzhu feeplane-infoicon" onTap="alipayAccreditClick"></text>-->
+        </view>
+      </view>
+    </view>
+  </view>
+  <!--协议预计提交订单按钮-->
+  <view class="menuPlane">
+    <view class="readProtocolPlane" a:if="{{remindProtocol}}">
+      <view class="readProtocolPlane-top">请先阅读并同意协议
+      </view>
+      <canvas class="canvasElement" id="canvas">
+      </canvas>
+    </view>
+    <view class="menuplane-sectionAgree">
+      <view class="checkbox-div" onTap="onCheckBoxClick">
+        <image src="{{checkBoxImageUrl}}" class="checkBox-img"/>
+      </view>
+      <view class="protocol-div">
+        <text>我已阅读并同意
+        </text>
+        <text class="protocolText" a:for="{{protocolList}}" a:for-index="idx" data-Index="{{idx}}" data-ItemName="{{itemName}}" a:for-item="itemName" onTap="protocolClick">《{{itemName}}》
+        </text>
+      </view>
+    </view>
+    <view class="menuplane-sectionbutton">
+      <button class="{{checkBoxChoose===true?'submitBtn':'submitBtnHL'}}" onTap="clickSubmit">提交订单
+      </button>
+    </view>
+  </view>
+  <!--基础信息的展示-->
+  <info-alert dialogTitle="{{toastTitle}}" dialogContent="{{toastContent}}" onHideBtnClick="onHideToastClick" a:if="{{showToast}}"/>
+  <!-- 优惠券弹框 -->
+  <popup show="{{showBottom}}" position="bottom" disableScroll="{{false}}" onClose="onPopupClose">
+    <image class="close-img" src="/image/close_2x.png" onTap="onPopupClose"></image>
+    <view class="coupons">
+      <view >
+        <text class="coupons-title">可使用优惠券</text>
+        <custom-card a:for="{{enabledCards}}" a:for-item="card" amount="{{card.customerCouponInfoVO.faceNumber}}" title="{{card.customerCouponInfoVO.couponShortName}}" subTitle="{{card.customerCouponInfoVO.rulesShortMsg}}" key="{{index}}" status="{{card.available}}" type="{{card.operation}}" selectStatus="{{card.selectStatus}}" footer="{{card.footer}}" id="{{card.customerCouponInfoVO.id}}"  onTap="clickCard"></custom-card>
+      </view>
+      <view >
+        <text class="coupons-title">不可使用优惠券</text>
+        <custom-card a:for="{{disabledCards}}" a:for-item="card" amount="{{card.customerCouponInfoVO.faceNumber}}" title="{{card.customerCouponInfoVO.couponShortName}}" subTitle="{{card.customerCouponInfoVO.rulesShortMsg}}" key="{{card.customerCouponInfoVO.id}}" status="{{card.available}}" type="{{card.operation}}" footer="{{card.footer}}" id="{{card.customerCouponInfoVO.id}}"></custom-card>
+      </view>
+    </view>
+  </popup>
+</view>

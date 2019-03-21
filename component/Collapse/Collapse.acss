@@ -1,0 +1,58 @@
+.a-collapse {
+  /* border-top: 1px solid #ddd; */
+  background-color: #fff;
+  color: #000;
+}
+
+.classify {
+  margin: 30rpx 0 16rpx 30rpx;
+}
+
+.classify-title {
+  font-size: 28rpx;
+  line-height: 40rpx;
+  color: #333;
+  padding: 2rpx 18rpx;
+  background: #ffda29;
+  border-radius: 23rpx 0rpx 23rpx 0rpx;
+}
+
+/* .a-collapse-content */
+.a-collapse-border {
+  border-bottom: 1rpx solid #dddddd;
+}
+
+.collapse-box {
+  margin: 0rpx 30rpx;
+}
+
+.a-collapse-title {
+  position: relative;
+  padding: 24rpx 35rpx 24rpx 0;
+  line-height: 40rpx;
+  font-size: 28rpx;
+  color: #222;
+}
+.a-collapse-title-arrow {
+  position: absolute;
+  top: 30rpx;
+  right: 5rpx;
+  width: 30rpx;
+  height: 30rpx;
+  background-image: url("data:image/svg+xml;charset=utf-8,<svg width='16' height='26' viewBox='0 0 16 26' xmlns='http://www.w3.org/2000/svg'><path d='M2 0L0 2l11.5 11L0 24l2 2 14-13z' fill='%23C7C7CC' fill-rule='evenodd'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  /*transform: rotate(90deg);*/
+}
+.a-collapse-title-arrow-up {
+  transform: rotate(270deg);
+}
+
+.a-collapse-content {
+  padding: 24rpx;
+  font-size: 24rpx;
+  font-family: PingFangSC-Regular;
+  color: #888888;
+  line-height: 33rpx;
+}

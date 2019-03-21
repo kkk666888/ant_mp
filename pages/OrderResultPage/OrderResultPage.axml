@@ -1,0 +1,80 @@
+<view class="order-result-page">
+  <!--图标面板-->
+  <view class="or-icon-plane">
+    <view class="icon-imagebox">
+      <image class="icon-image" src="/image/orderSubmit/success1_3x.png" mode="aspectFit" a:if="{{success}}"/>
+      <image class="icon-image" src="{{errorIcon}}" mode="aspectFit" a:else/>
+    </view>
+    <view a:if="{{success}}">
+      <view class="icon-label" >订单预约成功~</view>
+      <view class="icon-label-gray">尊敬的客户，您的订单预约成功， 您的订单预约成功，24h内将代扣首期费用，代扣成功后，我们将为您尽快送货，若代扣失败，订单自动取消，如有押金被冻结，额度将即刻恢复。</view>
+    </view>
+    <view class="" a:else>
+      <view class="icon-label">{{errorTitle}}</view>
+      <view class="icon-label-gray">{{errorReason}}</view>
+    </view>
+
+    <view a:if="{{success}}">
+      <view a:if="{{orderType === 1}}" class="icon-label-gray">续租成功，旧订单到期后续租订单将自动激活</view>
+      <view a:else class="icon-label-gray">我们将尽快为你配送</view>
+      <view class="icon-zima-branch" a:if="{{orderCreditAmtShow}}">
+        <image class="zimalogo"  src="/image/orderSubmit/zhima_label2_3x.png" mode="aspectFit"/>
+      </view>
+    </view>
+  </view>
+  <!--订单详情-->
+  <block a:if="{{success}}">
+    <view class="or-detail-plane">
+      <view class="fee-section1">
+        <view class="flexBox">
+          <view class="flexLeft fee-black-font">租期</view>
+          <view class="flexRight fee-black-font">{{feeDetail.totalDays}}天</view>
+        </view>
+        <view class="flexBox">
+          <view class="flexLeft fee-gray-font">每日租金</view>
+          <view class="flexRight fee-gray-font">￥{{feeDetail.dayAvgRentAmt}}</view>
+        </view>
+        <view class="flexBox" style="margin-bottom: 20rpx" a:if="{{coupon}}">
+          <view class="flexLeft fee-gray-font">首期应付</view>
+          <view class="flexRight fee-gray-font">￥{{feeDetail.totalMoney}}</view>
+        </view>
+        <view class="flexBox" style="margin-bottom: 20rpx" a:else>
+          <view class="flexLeft fee-gray-font">首期应付</view>
+          <view class="flexRight fee-gray-font">￥{{feeDetail.totalMoney}}</view>
+        </view>
+        <text class="fee-reminder">月租金将于次月通过支付宝免密支付的方式还款</text>
+      </view>
+      <view class="fee-section2">
+        <view class="flexBox" a:if="{{depositAmtShow}}">
+          <view class="flexLeft fee-black-font">总押金</view>
+          <view class="flexRight fee-black-font">¥{{feeDetail.orderDepositAmt}}</view>
+        </view>
+        <view class="flexBox" a:if="{{orderCreditAmtShow}}">
+          <view class="flexLeft fee-black-font">芝麻信用免押金</view>
+          <view class="flexRight fee-black-font">-¥{{feeDetail.orderCreditAmt}}</view>
+        </view>
+        <view class="flexBox">
+          <view class="flexLeft fee-black-font">已冻结押金</view>
+          <view class="flexRight fee-black-font">¥{{feeDetail.payDepositAmt}}</view>
+        </view>
+      </view>
+    </view>
+  </block>
+  <!--按钮面板-->
+  <view class="or-menu-plane" a:if="{{success}}">
+    <view class="look-detail-box">
+      <button class="look-detail-btn" onTap="onlookOrderBtnClick">查看订单</button>
+    </view>
+    <view class="go-home-box">
+      <button class="go-home-btn" onTap="onReturnHomeBtnClick">返回首页</button>
+    </view>
+  </view>
+  <view class="or-menu-plane-fail" a:else>
+    <button class="retry-btn" onTap="onReturnHomeBtnClick">返回首页</button>
+    <!-- <button class="retry-btn" onTap="onRetryBtnClick">重试</button> -->
+  </view>
+  <!--租赁版权信息-->
+  <view class="or-copyright-plane" a:if="{{success}}">
+    <image class="copyright-icon" src="/image/orderSubmit/wuzhi_zhima2_3x.png" />
+  </view>
+</view>

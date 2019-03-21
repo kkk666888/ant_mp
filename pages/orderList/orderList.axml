@@ -1,0 +1,60 @@
+<view class="page-order-list">
+  <view class="page-section">
+    <view class="page-section-btns">
+      <view a:for="{{listTitles}}" style="{{curTitle == index ? border2 : border0}}" class="title-items" onTap="selectItem" data-value="{{index}}">
+        <text>{{item}}
+        </text>
+      </view>
+    </view>
+  </view>
+  <view class="order-list">
+    <view class="list-none" a:if="{{!orderInfos.length}}">
+      <image class="emptyImg" src="/image/orderList/order_empty.png">
+      </image>
+      <view>暂无相关订单
+      </view>
+    </view>
+    <view class="order-list-wrapper" a:else a:for="{{orderInfos}}">
+      <view class="list-header">
+        <text class="left">{{item.statusChangeDate}}
+        </text>
+        <text class="right">{{ item.statusStr.split('-')[0] }}
+        </text>
+      </view>
+      <view class="list-content" onTap="goDetailPage" data-orderNo="{{item.orderNo}}">
+        <image class="img" src="{{ item.listImg }}" mode="" />
+        <view class="content-right">
+          <view class="f14 pb8">{{item.shortName}}
+          </view>
+          <view class="f12 pb8 f-gray">{{item.specContentList}}
+          </view>
+          <!-- <view class="f14 pb8">总租金：￥{{item.orderRentAmt}}</view> -->
+          <view class="f14 pb8">租金：￥{{item.dayAvgRentAmt}}/天
+          </view>
+          <view class="f10 b-green" a:if="{{item.orderCreditAmt != 0}}">
+          </view>
+        </view>
+      </view>
+      <view class="list-footer">
+        <!-- <button type="default" size="defaultSize" onTap="makePhoneCall"> 联系客服</button> -->
+        <!--<button a:if="{{item.showBTN && (item.showBTN.indexOf('1')!='-1')}}" type="default" size="defaultSize"-->
+        <!--onTap="GoToPage" data-items="{{item}}" data-id="{{1}}"> 取消订单 </button>-->
+        <button a:if="{{item.showBTN && (item.showBTN.indexOf('2')!='-1')}}" type="default" size="defaultSize" onTap="GoToPage" data-items="{{item}}" data-id="{{2}}" class="bb-yellow"> 支付 
+        </button>
+        <!--<button a:if="{{item.showBTN && (item.showBTN.indexOf('4')!='-1')}}" type="default" size="defaultSize"-->
+        <!--onTap="GoToPage" data-items="{{item}}" data-id="{{4}}"> 维修 </button>-->
+        <button a:if="{{item.showBTN && (item.showBTN.indexOf('3')!='-1')}}" type="default" size="defaultSize" onTap="GoToPage" data-items="{{item}}" data-id="{{3}}" class="bb-yellow"> 查看物流 
+        </button>
+        <button a:if="{{item.showBTN && (item.showBTN.indexOf('5')!='-1')}}" type="default" size="defaultSize" onTap="GoToPage" data-items="{{item}}" data-id="{{5}}"> 归还 
+        </button>
+        <button a:if="{{item.showBTN && (item.showBTN.indexOf('6')!='-1')}}" type="default" size="defaultSize" onTap="GoToPage" data-items="{{item}}" data-id="{{6}}"> 续租 
+        </button>
+        <button a:if="{{item.showBTN && (item.showBTN.indexOf('7')!='-1')}}" type="default" size="defaultSize" onTap="GoToPage" data-items="{{item}}" data-id="{{7}}" class="bb-yellow"> 买断 
+        </button>
+        <button a:if="{{item.showBTN && (item.showBTN.indexOf('8')!='-1')}}" type="default" size="defaultSize" onTap="GoToPage" data-items="{{item}}" data-id="{{8}}" class="bb-yellow"> 查看账单 
+        </button>
+        <contact-button a:if="{{item.showBTN && (item.showBTN.indexOf('9')!='-1')}}" tnt-inst-id="HLATCNCN" scene="SCE00007449" icon="/image/customerService.png" size="80" />
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/Buyout/Buyout",
+    "pages/GoodsReturn/GoodsReturn",
+    "pages/GoodDetail/GoodDetail",
+    "pages/orderList/orderList",
+    "pages/OrderResultPage/OrderResultPage",
+    "pages/OrderSubmitPage/OrderSubmitPage",
+    "pages/orderDetail/orderDetail",
+    "pages/LogisticsDetail/LogisticsDetail",
+    "pages/ProtocolHtml/ProtocolHtml",
+    "pages/MinePage/MinePage",
+    "pages/helpCenter/helpCenter",
+    "pages/inviteFriend/inviteFriend",
+    "pages/viewBill/viewBill",
+    "pages/relet/ReletOrder",
+    "pages/ActivityHtml/ActivityHtml",
+    "pages/Coupons/Coupons"
+  ],
+  "window": {
+    "defaultTitle": "物主租赁"
+  },
+  "tabBar": {
+    "textColor": "#999999",
+    "selectedColor": "#FFC400",
+    "backgroundColor": "#FFFFFF",
+    "items": [
+      {
+        "pagePath": "pages/index/index",
+        "name": "租赁",
+        "icon": "image/first_page_normal.png",
+        "activeIcon": "image/first_page_active.png"
+      },
+      {
+        "pagePath": "pages/MinePage/MinePage",
+        "name": "我的",
+        "icon": "image/type_active_not.png",
+        "activeIcon": "image/type_active_3.png"
+      }
+    ]
+  }
+}

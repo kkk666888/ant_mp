@@ -1,0 +1,45 @@
+<import src="../../component/alipayBiz/list/index.axml" />
+
+<view class="goodsreturn">
+  <view class="goodsreturn-item">
+    <text class="return-type">归还方式</text>
+    <text class="return-express">快递归还</text>
+  </view>
+  <view class="return-detail">
+    <view class="return-address">
+      <view class="address-title">
+        归还地址
+      </view>
+      <view class="address-detail">
+        <text class="address-detail-item">{{supplierAddress}}</text>
+        <text class="address-detail-item">{{supplierContact}}</text>
+      </view>
+      <view class="address-detail"></view>
+    </view>
+    <view class="return-logistics-company">
+      <picker onChange="chooseLogisticsChange" range="{{logisticsArray}}" range-key="expressCompanyName">
+        <view class="row">
+          <view class="row-title">物流公司</view>
+          <view class="row-extra">{{logisticsName}}</view>
+          <image class="row-arrow" src="/image/arrowright.png" mode="aspectFill" />
+        </view>
+      </picker>
+    </view>
+    <view class="return-logistics-number">
+      <view class="form-row">
+        <view class="express-no">物流单号</view>
+        <view class="form-row-content">
+          <input class="input" onInput="inputLogisticsNo" placeholder="请输入物流单号" placeholder-style='font-size: 32rpx;color: #BBBBBB;' />
+        </view>
+      </view>
+    </view>
+    <view class="return-tips">
+      <view class="return-tips-item">归还邮费由用户自己承担，拒绝到付，并请购买保价服务</view>
+      <view class="return-tips-item">寄件时，请选择顺丰物流，并填写正确的寄件人信息。</view>
+    </view>
+  </view>
+
+  <button type="primary" hover-class="" class="return-submit" disabled={{submitDisabled}} onTap="submitReturn">确认</button>
+  <!--操作成功后的提示-->
+  <success-toast dialogContent="归还成功" onHideBtnClick="onHideToastClick" a:if="{{showToast}}"/>
+</view>

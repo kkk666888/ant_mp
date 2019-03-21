@@ -1,0 +1,29 @@
+<view class="logistics-detail">
+  <view class="header">
+    <image class="img" src="/image/common/logistics.png" mode=""/>
+    <view class="img-right-wrapper">
+      <view>物流公司：{{company}}</view>
+      <view>物流单号：{{deliveryOrderNo}}</view>
+    </view>
+    <view class="f-r">
+      <button onTap="handleCopy">复制</button>
+    </view>
+  </view>
+  <view class="content">
+    <view class="list-wrapper">
+      <view class="item-list" a:for="{{routeInfo}}">
+        <view class="item-left">
+          <view class="times">{{item.times}}</view>
+          <view class="day">{{item.day}}</view>
+        </view>
+        <view class="item-right">
+          <view class="timeline-wrapper">
+            <view class="item-timeline"></view>
+            <view class="icon-danxuan icon iconfont"></view>
+          </view>
+          <view class="address">{{item.address}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

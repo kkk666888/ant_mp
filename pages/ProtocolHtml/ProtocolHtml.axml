@@ -1,0 +1,3 @@
+<view class="protocolhtml">
+  <web-view src="{{url}}" onMessage="test"></web-view>
+</view>

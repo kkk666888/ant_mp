@@ -1,0 +1,337 @@
+<view class="order-detail">
+  <view class="header">
+    <view class="order-status-wrapper">
+      <view class="f-bold f18 pt40 order-status {{orderClass}}">{{orderStatusStr}}
+      </view>
+      <view class="f14 pt30">{{orderStatusDes}}
+      </view>
+    </view>
+    <view class="f14 opacity-p5">{{statusDate}}
+    </view>
+  </view>
+  <!--用户信息面板-->
+  <view class="userPlane">
+    <view style="display: flex" class="blackMediaFont" a:if="{{userInfo}}">
+      <view class="userPlane-name">{{userInfo.receiveName}}
+      </view>
+      <view class="userPlane-phone">{{userInfo.receivePhone}}
+      </view>
+    </view>
+    <view class="userplane-second">
+      <view class="userplane-address-icon">
+        <image src="/image/common/destination_3x.png" class="userplane-address-icon" />
+      </view>
+      <view>
+        <view class="blackMediaFont" class="userplane-address">{{userInfo.receiveAddress}}
+        </view>
+        <view a:if="{{bizStatus != 4}}" class="userplane-reminder blackMediaFont">如需修改地址，请取消订单，重新下单并在信用套餐页面进行修改
+        </view>
+      </view>
+    </view>
+  </view>
+  <!--商品详情面板-->
+  <view class="goodsPlane">
+    <view style="width: 80px; height: 80px; margin-right: 20px">
+      <!-- ./../../image/logo. -->
+      <image style="background-color: #eeeeee; width: 80px; height:80px;" mode="scaleToFill" src="{{goodsDetail.listImg}}" onError="imageError" onLoad="imageLoad" />
+    </view>
+    <view>
+      <view class="mb10">{{goodsDetail.fullName}}
+      </view>
+      <view class="f12 f-gray mb8">规格：{{goodsDetail.specContentList.split(',').join('/')}}
+      </view>
+      <view class="mb10">租金：¥{{dayAmt}}/天
+      </view>
+      <view class="img" a:if="{{aliPayShow}}">
+      </view>
+    </view>
+  </view>
+  <!--费用列表-->
+  <view class="feePlane">
+    <!--费用列表部分-->
+    <view class="fee-section1">
+      <view class="flexBox">
+        <view class="flexLeft f-gray">每日租金
+        </view>
+        <view class="flexRight">￥{{dayAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox">
+        <view class="flexLeft f-gray">租期
+        </view>
+        <view class="flexRight f-gray">{{feeDetail.termDay}}天
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{feeDetail.payStyleStr}}">
+        <view class="flexLeft ">结算方式
+        </view>
+        <view class="flexRight f-gray">{{feeDetail.payStyleStr}}
+        </view>
+      </view>
+      <view class="flexBox" a:for="{{serviceList}}" a:for-index="idx" a:for-item="feeItem">
+        <view class="flexLeft">
+          <text class="">{{feeItem.itemName}}
+          </text>
+          <text data-feeItem="{{feeItem}}" onTap="feeIconClick" class="feeplane-infoText">
+            <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="center" />
+          </text>
+        </view>
+        <view class="flexRight ">{{feeItem.itemValue}}
+        </view>
+        <view class="insureEndTime f-gray" a:if="{{ shwoBuyoutDetail && buyOutDetail.insureEndTime && feeItem.feeTypeCode === 'FWFYYWBZ' }}">          意外保障金累计缴纳至{{ buyOutDetail.insureEndTime }}        
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{(bizStatus === '4' || bizStatus === '5' || bizStatus === '6') && status !== '99005' && coupon}}">
+        <view class="flexLeft">优惠券
+        </view>
+        <view class="flexRight">-￥{{coupon.couponDeductResponse.deductAmt}}
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{(bizStatus === '4' || bizStatus === '5' || bizStatus === '6') && status !== '99005' && coupon}}">
+        <view class="flexLeft">
+          <text class="f-gray" a:if="{{bizStatus === '4' || bizStatus === '5' || bizStatus === '6'}}">首期应付
+          </text>
+          <text data-feeItem="{{feeItem}}" onTap="firstBillIconClick" class="feeplane-infoText">
+            <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="center" />
+          </text>
+        </view>
+        <view class="flexRight">
+          <text class="origin-price f-gray line-through">￥{{feeDetail.totalMoney}}
+          </text>          ￥{{currentMoney}}        
+        </view>
+      </view>
+      <!--4， 5， 6 显示-->
+      <view class="flexBox" a:if="{{(bizStatus == '4' || bizStatus === '5' || bizStatus === '6') && status !== '99005' && !coupon}}">
+        <view class="flexLeft">
+          <text a:if="{{bizStatus === '4' || bizStatus === '5' || bizStatus === '6'}}">首期应付
+          </text>
+          <text data-feeItem="{{feeItem}}" onTap="firstBillIconClick" class="feeplane-infoText">
+            <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="center" />
+          </text>
+        </view>
+        <view class="flexRight">          ￥{{feeDetail.totalMoney.toFixed(2)}}        
+        </view>
+      </view>
+      <!--7租用中， 99已完结显示（根据状态有数据则显示，无数据不显示）-->
+      <view a:if="{{bizStatus === '7' && status !== '7007' }}">
+        <view class="flexBox" a:if="{{coupon && coupon.couponDeductResponse.term == currentPeriod}}">
+          <view class="flexLeft">优惠券
+          </view>
+          <view class="flexRight">-￥{{coupon.couponDeductResponse.deductAmt}}
+          </view>
+        </view>
+        <view class="flexBox">
+          <view class="flexLeft">本期应付
+          </view>
+          <view class="flexRight" a:if="{{!coupon || coupon.couponDeductResponse.term != currentPeriod}}">￥{{feeDetail.currentPeriodAmt.toFixed(2) || feeDetail.totalMoney}}
+          </view>
+          <view class="flexRight" a:else>
+            <text class="origin-price f-gray line-through">￥{{feeDetail.currentPeriodAmt.toFixed(2) || feeDetail.totalMoney}}
+            </text>            ￥{{currentMoney}}          
+          </view>
+        </view>
+        <!--7租用中， 99已完结显示-->
+        <view class="flexBox" >
+          <view class="flexLeft">下期应付
+          </view>
+          <view class="flexRight" a:if="{{coupon}}">￥{{currentPeriod == 1 ? currentMoney : feeDetail.nextPeriodAmt.toFixed(2)}}</view>
+          <view class="flexRight" a:else>￥{{currentPeriod == 1 ? feeDetail.totalMoney : feeDetail.nextPeriodAmt.toFixed(2)}}</view>
+        </view>
+        <!--7租用中， 99已完结显示-->
+        <view class="flexBox" a:if="{{feeDetail.nextPayTime}}">
+          <view class="flexLeft">下期支付日
+          </view>
+          <view class="flexRight">{{feeDetail.nextPayTime}}
+          </view>
+        </view>
+        <view class="flexBox">
+          <view class="flexLeft f-gray">租金付款方式
+          </view>
+          <view class="flexRight f-gray">
+            <text style="margin-right: 5px">支付宝免密支付
+            </text>
+            <text data-feeItem="{{feeItem}}" onTap="alipayIconClick" class="alipayIconClick">
+              <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="center" />
+            </text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 押金说明 -->
+    <view class="fee-section2">
+      <view class="flexBox" a:if="{{feeDetail.orderDepositAmt}}">
+        <view class="flexLeft ">总押金
+        </view>
+        <view class="flexRight f-gray">¥{{feeDetail.orderDepositAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{feeDetail.orderCreditAmt}}">
+        <view class="flexLeft">芝麻信用免押金
+        </view>
+        <view class="flexRight">-¥{{feeDetail.orderCreditAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{feeDetail.payDepositAmt}}">
+        <view class="flexLeft">已冻结押金
+        </view>
+        <view class="flexRight f-gray">¥{{feeDetail.payDepositAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{feeDetail.orderCreditAmt < feeDetail.orderDepositAmt}}">
+        <view class="flexLeft f-gray">押金冻结方式
+        </view>
+        <view class="flexRight">
+          <text style="margin-right: 5px" class="f-gray">支付宝资金授权
+          </text>
+          <text data-feeItem="{{feeItem}}" onTap="alipayIconClick" class="alipayAccreditClick">
+            <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="center" />
+          </text>
+          <!--<text class="icon iconfont icon-bangzhu feeplane-infoicon" onTap="alipayAccreditClick"></text>-->
+        </view>
+      </view>
+    </view>
+    <!-- 买断说明 -->
+    <view class="fee-section3" a:if="{{shwoBuyoutDetail}}">
+      <view class="flexBox">
+        <view class="flexLeft f-gray">商品买断价
+        </view>
+        <view class="flexRight f-gray">¥{{buyOutDetail.buyOutPrice.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox">
+        <view class="flexLeft f-gray">已支付租金
+        </view>
+        <view class="flexRight f-gray">¥{{buyOutDetail.payRentAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox">
+        <view class="flexLeft ">需支付买断金
+        </view>
+        <view class="flexRight ">¥{{buyOutDetail.actualBuyOutAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox" a:for="{{buyOutDetail.buyoutFeeInfos}}" a:for-index="idx" a:for-item="feeItem">
+        <view class="flexLeft">          {{feeItem.feeName}}        
+        </view>
+        <view class="flexRight">¥{{feeItem.feeAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{buyOutDetail.cashOffsetAmt}}">
+        <view class="flexLeft ">物主卡抵扣
+        </view>
+        <view class="flexRight ">¥{{buyOutDetail.cashOffsetAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{buyOutDetail.cashDeductionAmt}}">
+        <view class="flexLeft ">账户抵扣
+        </view>
+        <view class="flexRight ">¥{{buyOutDetail.cashDeductionAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox">
+        <view class="flexLeft ">实际应付
+        </view>
+        <view class="flexRight ">¥{{buyOutDetail.shouldPayAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox">
+        <view class="flexLeft " a:if="{{status === '99005'}}">支付宝支付
+        </view>
+        <view class="flexLeft " a:else>免密支付
+        </view>
+        <view class="flexRight ">-¥{{buyOutDetail.actualPayAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{buyOutDetail.depositDeductionAmt && status !== '99005'}}">
+        <view class="flexLeft ">押金抵扣
+        </view>
+        <view class="flexRight ">-¥{{buyOutDetail.depositDeductionAmt.toFixed(2)}}
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{status !== '99005'}}">
+        <view class="flexLeft f-gray">支付状态
+        </view>
+        <view class="flexRight f-gray" a:if="{{bizStatus === '99'}}">已支付
+        </view>
+        <view class="flexRight f-gray" a:else>未支付
+        </view>
+      </view>
+      <view class="flexBox">
+        <view class="flexLeft f-gray">支付时间
+        </view>
+        <view class="flexRight f-gray">{{buyOutDetail.payTime.split(' ')[0] || '-'}}
+        </view>
+      </view>
+      <view class="flexBox" a:if="{{status !== '99005'}}">
+        <view class="flexLeft f-gray">买断支付方式
+        </view>
+        <view class="flexRight f-gray">
+          <text style="margin-right: 5px">支付宝免密支付
+          </text>
+          <text data-feeItem="{{feeItem}}" onTap="alipayIconClick" class="alipayIconClick">
+            <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="center" />
+          </text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 订单状态时间管理 -->
+  <view class="time-control" a:if="{{timeControl}}" style="padding-bottom: {{showBtn ? '70px' : '20px'}}">
+    <!--已取消、待发-->
+    <view class="flexBox">
+      <view class="flexLeft f-gray">订单编号
+      </view>
+      <view class="flexRight f-gray">{{orderNo}}
+      </view>
+    </view>
+    <view class="flexBox">
+      <view class="flexLeft f-gray">下单时间
+      </view>
+      <view class="flexRight f-gray">{{timeControl.createDate}}
+      </view>
+    </view>
+    <!--待收货-->
+    <view class="flexBox" a:if="{{bizStatus === '6' || bizStatus === '7' || bizStatus === '99' || bizStatus === '10'}}">
+      <view class="flexLeft f-gray">发货时间
+      </view>
+      <view class="flexRight f-gray">{{timeControl.deliveryDate}}
+      </view>
+    </view>
+    <!--租用中-->
+    <view class="flexBox" a:if="{{bizStatus === '7' || bizStatus === '99' || bizStatus === '10'}}">
+      <view class="flexLeft f-gray">收货时间
+      </view>
+      <view class="flexRight f-gray">{{timeControl.signingDate}}
+      </view>
+    </view>
+    <!--已完结-->
+    <view class="flexBox" a:if="{{bizStatus === '99'}}">
+      <view class="flexLeft f-gray">完结时间
+      </view>
+      <view class="flexRight f-gray">{{timeControl.finishDate}}
+      </view>
+    </view>
+  </view>
+  <!-- 底部button管理 -->
+  <view class="btn-control-wrapper" a:if="{{showBtn}}">
+    <view class="btn-control">
+      <!-- <button type="default" size="defaultSize" onTap="makePhoneCall">联系客服</button> -->
+      <contact-button a:if="{{orderButtons.indexOf('9')!='-1'}}" class="service-btn" tnt-inst-id="HLATCNCN" scene="SCE00007449" icon="/image/customerService.png" size="80" />
+      <text class="btn-margin">
+      </text>
+      <button a:if="{{orderButtons.indexOf('2')!='-1'}}" class="bb-yellow" type="default" size="defaultSize" onTap="goForceBuyout">支付</button>
+      <button a:if="{{orderButtons.indexOf('3')!='-1'}}" class="bb-yellow" type="default" size="defaultSize" onTap="goLogisticsDetailPage">查看物流
+      </button>
+      <button a:if="{{orderButtons.indexOf('5')!='-1'}}" class="" type="default" size="defaultSize" onTap="goGoodsReturn">归还
+      </button>
+      <button a:if="{{orderButtons.indexOf('6')!='-1'}}" class="" type="default" size="defaultSize" onTap="goRelet">续租
+      </button>
+      <button a:if="{{orderButtons.indexOf('7')!='-1'}}" class="bb-yellow" type="default" size="defaultSize" onTap="goBuyout">买断
+      </button>
+      <button a:if="{{orderButtons.indexOf('8')!='-1'}}" class="bb-yellow" type="default" size="defaultSize" onTap="goBillPage">查看账单
+      </button>
+    </view>
+  </view>
+  <!--基础信息的展示-->
+  <info-alert dialogTitle="{{toastTitle}}" dialogContent="{{toastContent}}" onHideBtnClick="onHideToastClick" a:if="{{showToast}}" />
+</view>

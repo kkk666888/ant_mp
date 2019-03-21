@@ -1,0 +1,75 @@
+<view class="viewBill">
+    <view class="header">
+        <view class="flexContainer">
+            <view class="left">
+                <image class="img" src="{{model.commodityInfo.listImg}}"/>
+            </view>
+            <view class="right">
+                <view>
+                    <view class="name">{{model.commodityInfo.fullName}}</view>
+                    <view class="size">规格：{{model.commodityInfo.specContentList}}</view>
+                    <!-- <view class="rentAmount">总租金：￥{{model._orderRentAmt}}</view> -->
+                    <view class="rentAmount">租金：￥{{model._dayAvgRentAmt}}/天</view>
+                    <view a:if="{{showAliImg}}">
+                        <image class="zhimaImg" src="/image/common/zhima_label1_2x.png"/>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="moneyItem">
+        <view class="flex-container align-item-center align-center">
+            <view class="flex-column">
+                <view class="money">{{model._shouldAmt}}</view>
+                <view class="mark">应还金额(元)</view>
+            </view>
+            <view class="flex-column">
+                <view class="money">{{model._alreadyRepaidAmt}}</view>
+                <view class="mark">已还金额(元)</view>
+            </view>
+            <view class="flex-column">
+                <view class="money">{{model._noRepaidAmt}}</view>
+                <view class="mark">待还金额(元)</view>
+            </view>
+        </view>
+    </view>
+    <view class="mark2">
+        <image class="noticeImg" src="/image/common/notice.png" />
+        账单到期将通过支付宝免密支付方式还款，请注意查收信息
+    </view>
+    <view class="border"></view>
+    <view 
+        class="itemDetail {{item._className}}"
+        a:for="{{model.repaymentPlanList}}" key={{item}}>
+        <view class="periods">
+            <view class="flex-container align-item-center">
+                <view class="flex-column flex-column-200">
+                    <view class="label1">{{item.term}}/{{model.totalTerm}}期</view>
+                </view>
+                <view class="flex-column align-right">
+                    <view class="label2">{{item._paymentStatus}}</view>
+                </view>
+            </view>
+            <view class="flex-container align-item-center">
+                <view class="flex-column flex-column-200">
+                    <view class="label3">
+                        <view class="money-mark">￥</view>
+                        {{item._showMoney}}
+                    </view>
+                </view>
+                <view class="flex-column align-right">
+                    <!--1:待还款 2:已还款，但未还清 3:已还款 4:已逾期-->
+                    <view a:if={{item.paymentStatus=='1'||item.paymentStatus=='2'}} class="label4">
+                        {{item._payDate}}通过支付宝免密支付还款
+                    </view>
+                    <view a:if={{item.paymentStatus=='3'}} class="label4">
+                        {{item._settleDate}}
+                    </view>
+                    <view a:if={{item.paymentStatus=='4'}} class="label4">
+                        {{item._payDate}}
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

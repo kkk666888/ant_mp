@@ -1,0 +1,16 @@
+<view class="inviteFriend">
+    <view class="header">我的邀请二维码：</view>
+    <view class="barcodeView">
+        <view class="item itemBarCode">
+            <image class="itemBarCodeImg" src="{{model.invitationQRCodeUrl}}"/>
+        </view>
+        <view class="item item2">
+            <view>本月累计邀请<text class="currentMonth">{{model.monthApplyNum}}</text>单</view>
+            <view>总共累计邀请<text class="total">{{model.recommApplyNum}}</text>单</view>
+        </view>
+    </view>
+    <view class="ruleDesc">规则说明</view>
+    <view class="ruleDetail">
+        通过"我的邀请二维码"扫码进入支付宝小程序，提交订单成功后，且该订单在签收商品后次日，订单状态转为“租用中”时，视为一次有效邀请订单。
+    </view>
+</view>

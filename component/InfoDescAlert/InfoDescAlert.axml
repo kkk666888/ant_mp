@@ -1,0 +1,28 @@
+<!--弹框提示-->
+<view  class="infoDescAlert">
+  <!--mark-->
+  <view class="mark"></view>
+  <!--content-->
+  <view class="content">
+    <!--具体的内容板块-->
+    <view class="contentwrap">
+      <!--标题-->
+      <view class="white-radicus">
+        <view class="alertTitle" >
+          {{dialogTitle}}
+        </view>
+        <!--内容-->
+        <view class="contentDetail">
+          <text >
+            {{dialogContent}}
+          </text>
+        </view>
+        <view class="padding-bottom"></view>
+      </view>
+      <!--关闭的按钮-->
+      <view class="closeplane" onTap="closeFeeDesc">
+        <image src="/image/orderSubmit/close2_3x.png"  class="closeIcon"/>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "info-alert": "/component/InfoDescAlert/InfoDescAlert",
+    "popup": "mini-antui/es/popup/index",
+    "custom-card": "/component/CustomCard/CustomCard"
+  },
+  "defaultTitle": "确认订单"
+}

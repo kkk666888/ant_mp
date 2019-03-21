@@ -1,0 +1,199 @@
+@import '/common/css/index.acss';
+.buyout {
+  width: 100%;
+  color: #222;
+  font-size: 14px;
+}
+.section {
+  padding: 0 15px;
+}
+.item {
+  display: flex;
+  justify-content: space-between;
+}
+.f12 {
+  font-size: 12px;
+}
+.f16 {
+  font-size: 16px;
+}
+.f18 {
+  font-size: 18px;
+}
+.fz28 {
+  font-size: 28rpx;
+}
+.mt20 {
+  margin-top: 20rpx;
+}
+.mt30 {
+  margin-top: 30rpx;
+}
+.mt40 {
+  margin-top: 40rpx;
+}
+.ml15 {
+  margin-left: 15rpx;
+}
+.mr15 {
+  margin-right: 15rpx;
+}
+.pt30 {
+  padding-top: 30rpx;
+}
+.pt40 {
+  padding-top: 40rpx;
+}
+.pb27 {
+  padding-bottom: 27rpx;
+}
+.pb40 {
+  padding-bottom: 40rpx;
+}
+.lh30 {
+  line-height: 30rpx;
+}
+.lh44 {
+  line-height: 44rpx;
+}
+.gray {
+  color: #999;
+}
+.black {
+  color: #333333;
+}
+.bb1 {
+  border-bottom: 1rpx solid #dddddd;
+}
+.blue {
+  color: #108ee9;
+}
+.bg-white {
+  background: #fff;
+}
+.p-r {
+  position: relative;
+}
+/* 商品信息 */
+.header {
+  display: flex;
+  padding: 40rpx 30rpx;
+  margin-bottom: 20rpx;
+}
+.header-img-wrapper {
+  height: 160rpx;
+  width: 160rpx;
+  margin-right: 20rpx;
+}
+.header-img {
+  width: 160rpx;
+  height: 160rpx;
+}
+.header-title {
+  color: #333;
+  line-height: 28rpx;
+}
+.header-des {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 18rpx;
+}
+.header-fee {
+  font-size: 28rpx;
+  margin-top: 14rpx;
+  color: #333;
+}
+.header-tag {
+  width: 170rpx;
+  height: 30rpx;
+  margin-top: 18rpx;
+}
+.zhima-img {
+  width: 170rpx;
+  height: 30rpx;
+}
+
+.buyout-section {
+  padding: 40rpx 30rpx;
+  font-size: 28rpx;
+}
+.feelist-section {
+  font-size: 28rpx;
+}
+.splitline {
+  border-bottom: 1rpx solid #ddd;
+}
+.infoicon {
+  position: relative;
+  top: 2px;
+  color: #999999;
+  width: 16px;
+  height: 16px;
+  margin-left: 7rpx;
+  background-size: contain;
+}
+.icon-checked {
+  top: 0;
+  width: 44rpx;
+  height: 44rpx;
+  margin-right: 16rpx;
+}
+.readProtocolPlane {
+  position: absolute;
+  top: -60rpx;
+  left: 35rpx;
+}
+
+.buyout-tips {
+  margin: 40rpx 30rpx;
+  font-size: 24rpx;
+  line-height: 30rpx;
+  color: #999999;
+  background-color: #f7f7f7;
+}
+
+.protocol-checked {
+  display: flex;
+}
+
+.submit-wrap {
+  font-size: 28rpx;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 40rpx 30rpx;
+}
+
+/* 协议提示框 */
+.readProtocolPlanebgImage {
+  width: 314rpx;
+  height: 81rpx;
+  position: absolute;
+}
+
+.readProtocolPlane-top {
+  padding: 18rpx 40rpx 18rpx 39rpx;
+  font-size: 26rpx;
+  color: white;
+  line-height: 37rpx;
+  background: rgba(53, 57, 75, 1);
+  border-radius: 6rpx;
+  opacity: 0.9;
+}
+
+.readProtocolPlane-triangle {
+  position: relative;
+  left: 17rpx;
+  background: rgba(53, 57, 75, 1);
+  width: 8rpx;
+  height: 8rpx;
+  transform: rotate(90deg);
+}
+
+.canvasElement {
+  position: relative;
+  width: 300rpx;
+  height: 100rpx;
+}

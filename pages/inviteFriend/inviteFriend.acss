@@ -1,0 +1,56 @@
+.inviteFriend{
+    padding: 60rpx;
+    width: 100%;
+    background-color: #fff;
+}
+.header{
+    font-size: 40rpx;
+    color: #000;
+}
+
+.barcodeView{
+    display: flex;
+    padding: 38rpx;
+}
+
+.barcodeView .item{
+    flex:1;
+    font-size: 32rpx;
+    line-height: 45rpx;
+}
+
+.barcodeView .itemBarCode{
+    flex:0 0 240rpx;
+    background-color: #F5F5F5;
+    padding:9rpx;
+    padding-bottom: 0; 
+}
+
+.itemBarCode .itemBarCodeImg{
+    width: 240rpx;
+    height: 297rpx;
+}
+
+.item2{
+    padding-left: 36rpx;
+}
+
+.currentMonth{
+    color: #FFD600;
+}
+.total{
+    color: #FF2A3E;
+}
+
+.ruleDesc{
+    margin-top: 45rpx;
+    color: #000;
+    font-size: 40rpx;
+    margin-bottom: 18rpx;
+}
+
+.ruleDetail{
+    color: #000;
+    font-size: 26rpx;
+    line-height: 40rpx;
+}

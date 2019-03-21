@@ -1,0 +1,6 @@
+{
+  "defaultTitle": "订单详情",
+  "usingComponents": {
+    "info-alert": "/component/InfoDescAlert/InfoDescAlert"
+  }
+}

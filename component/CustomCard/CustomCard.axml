@@ -1,0 +1,35 @@
+<view
+  class="am-card {{status === '1' ? 'unusable' : ''}}"
+  hover-class="am-card-active"
+  onTap="onCardClick"
+>
+  <view class="am-card-body">
+    <image a:if="{{thumb}}" src="{{thumb}}" class="am-card-thumb" />
+    <view class="amount {{status === '1' ? 'unusable' : ''}}">
+      ￥<text class="number">{{amount}}</text>
+    </view>
+    <view class="am-card-content {{status === '1' ? 'unusable' : ''}}">
+      <view a:if="{{!thumb || (thumb && footer)}}" class="am-card-title">{{title}}</view>
+      <view class="am-card-subtitle">{{subTitle}}</view>
+    </view>
+    <!-- 右侧区域 -->
+    <view a:if="{{type == 'arrow'}}" class="am-card-arrow" aria-hidden="true" ></view>
+    <button  a:if="{{type == 'button' && status == '0'}}" class="am-card-button {{loading ? 'gray' : ''}}" aria-hidden="true" loading="{{loading}}">
+      <text class="operate-type">{{buttonText}}</text>
+    </button>
+    <view a:if="{{type == 'received'}}" class="am-card-button gray" aria-hidden="true" >
+      <text class="operate-type">{{buttonText}}</text>
+    </view>
+    <label a:if="{{type == 'radio'}}" class="radio" >
+      <image a:if="{{selectStatus === 'Y'}}" class="checked-radio" src="/image/Buyout/fill_2x.png"></image>
+      <radio a:else value="{{id}}" class="card-radio" />
+    </label>
+    <image a:if="{{type == 'overdue'}}" class="unusable-img"  src="/image/overdue_2x.png"></image>
+    <image a:if="{{type == 'used'}}" class="unusable-img" src="/image/used_2x.png"></image>
+  </view>
+  <view class="dashed-line"></view>
+  <view a:if="{{footer}}" class="am-card-footer">
+    <image a:if="{{footerImg}}" src="{{footerImg}}" />
+    {{footer}}
+  </view>
+</view>

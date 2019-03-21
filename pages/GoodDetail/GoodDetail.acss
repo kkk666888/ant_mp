@@ -1,0 +1,691 @@
+@import '/common/css/index.acss';
+
+.goodsDetail {
+  width: 100%;
+  height: 100%;
+}
+.get-msg {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 9999999999;
+}
+.good-detail {
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  font-family: PingFangSC-Regular;
+  background-color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', SimSun, sans-serif;
+  padding-bottom: 55px;
+}
+.good-detail-scrolling {
+  -webkit-overflow-scrolling: touch;
+}
+
+.good-detail.good-detail-hidden {
+  overflow: hidden;
+}
+/* banner */
+.swiper-section {
+  min-height: 660rpx;
+}
+.swiper-item {
+  display: block;
+  width: 750rpx;
+  height: 750rpx;
+  margin: auto;
+}
+.swiper-item image {
+  width: 100%;
+  height: 100%;
+}
+/* 广告 img */
+.advert {
+  width: 100%;
+  height: 88rpx;
+  position: relative;
+  left: -2rpx;
+}
+.advert image {
+  width: 100%;
+  height: 100%;
+}
+/* 商品信息 */
+.good-info {
+  padding: 15px 15px;
+  border-bottom: 1rpx solid #dddddd;
+}
+.good-info .info-head {
+  font-size: 32rpx;
+  color: #000000;
+  min-height: 18px;
+}
+.good-info .info-leadV {
+  margin-top: 14rpx;
+}
+.good-info .info-tag-wrap {
+  margin-top: 14rpx;
+}
+.good-info .info-tag {
+  display: inline-block;
+  max-width: 375rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 5rpx 7rpx;
+  background: #f5222d;
+  border-radius: 3px;
+  height: 30rpx;
+  font-size: 20rpx;
+  color: #ffffff;
+  line-height: 30rpx;
+}
+.good-info .info-leadflow {
+  color: #1f84fa;
+  padding: 5rpx 7rpx;
+  font-size: 26rpx;
+  line-height: 30rpx;
+  text-decoration: underline;
+}
+.good-info .info-price {
+  padding: 10px 0px;
+}
+.good-info .info-price view {
+  display: inline-block;
+}
+.good-info .info-price .price-title {
+  font-size: 32rpx;
+  color: #000000;
+  margin-right: 5px;
+  position: relative;
+  top: -1px;
+}
+.good-info .info-price .price-symbol {
+  color: #f5222d;
+  font-size: 24rpx;
+}
+.good-info .info-price .price-num {
+  color: #f5222d;
+  font-size: 48rpx;
+  font-weight: bold;
+}
+/* 增加对应的间隔 */
+.rightmargin {
+  margin-right: 30rpx;
+}
+
+.good-info .info-price .price-unit {
+  margin-left: 20rpx;
+  color: #f5222d;
+  font-size: 28rpx;
+}
+
+.tag-name {
+  color: #ffffff;
+  background: #ff4040;
+  text-align: center;
+  font-size: 13px;
+  margin-top: 20rpx;
+  padding: 4rpx 4rpx 0rpx 4rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  border-radius: 4rpx;
+  display: inline-block;
+}
+
+.website-price view {
+  display: inline-block;
+}
+.website-price .price-title {
+  font-size: 22rpx;
+  color: #999999;
+  margin-right: 5px;
+  position: relative;
+}
+.website-price .price-symbol {
+  font-size: 18rpx;
+  color: #222222;
+}
+.website-price .price-num {
+  font-size: 22rpx;
+  color: #222222;
+}
+/* 简介 */
+.brief-info {
+  position: relative;
+  padding-top: 15px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+.brief-info .info-item-con {
+  width: 100%;
+}
+.brief-info .info-item {
+  float: left;
+  font-size: 12px;
+  color: #000000;
+  width: 25%;
+}
+.brief-info .info-item .item-icon {
+  display: inline-block;
+  width: 22rpx;
+  height: 22rpx;
+  position: relative;
+  padding-right: 10rpx;
+}
+.brief-info .info-item .item-icon image {
+  width: 100%;
+  height: 100%;
+}
+.brief-info .info-item .item-txt {
+  display: inline-block;
+  color: #999999;
+}
+.brief-info .info-item-more {
+  position: absolute;
+  padding: 10px;
+  right: 0px;
+  top: 5px;
+}
+.brief-info .info-item-more image {
+  width: 15px;
+  height: 20px;
+}
+/* 背景块 */
+.bg-div {
+  width: 100%;
+  height: 20rpx;
+  background-color: #f7f7f7;
+}
+.activity {
+  height: 90rpx;
+  display: flex;
+  justify-content: space-between;
+}
+.activity .name {
+  font-size: 32rpx;
+  padding: 23rpx 0 23rpx 30rpx;
+  height: 45rpx;
+  color: #222222;
+  line-height: 45rpx;
+}
+.activity .shortDesc {
+  font-size: 32rpx;
+  padding: 23rpx 30rpx 23rpx 0;
+  height: 45rpx;
+  color: #888888;
+  line-height: 45rpx;
+}
+.activity .row-arrow {
+  width: 26rpx;
+  height: 26rpx;
+  margin-left: 12rpx;
+}
+
+/* tab */
+.good-tab {
+  height: 96rpx;
+  margin-bottom: 10rpx;
+  border-bottom: 1rpx solid #eeeeee;
+  display: flex;
+}
+.good-tab .tab-item {
+  width: 50%;
+  float: left;
+  text-align: center;
+  height: 100%;
+  line-height: 96rpx;
+}
+.good-tab .tab-item .item-txt {
+  width: 160rpx;
+  margin: auto;
+  font-size: 32rpx;
+  color: #000000;
+}
+/* 通过 active 控制 */
+.good-tab .tab-item .item-txt.active + .item-border {
+  display: block;
+  position: relative;
+  bottom: -1rpx;
+}
+.good-tab .tab-item .item-border {
+  display: none;
+  width: 120rpx;
+  height: 4rpx;
+  background-color: #ffda29;
+  margin: auto;
+}
+/* 商品详细资料 */
+.good-msg {
+  min-height: 250px;
+  font-size: 0;
+}
+.good-msg image {
+  width: 100%;
+  margin-top: -1px;
+}
+
+/*FAQ页面*/
+.good-faq {
+  margin-top: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.good-msg .good-msg-item {
+  padding: 10px;
+  padding-bottom: 0px;
+}
+.good-msg .good-msg-item .item-head {
+  font-size: 32rpx;
+  padding-top: 12px;
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+.good-msg .good-msg-item .item-txt {
+  padding: 2px 0px;
+  line-height: 1.5;
+  text-indent: 1em;
+  font-size: 13px;
+}
+/* footer */
+.footer {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 100rpx;
+  z-index: 890;
+  background-color: white;
+  border-top: 1rpx solid rgb(221, 221, 221);
+  border-top: 1rpx solid rgba(221, 221, 221, 1);
+}
+.footer .foot-left {
+  position: relative;
+  float: left;
+  padding-left: 20px;
+  top: 50%;
+  margin-top: -16px;
+}
+.footer .foot-left button {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+}
+.footer .foot-left .left-icon {
+  width: 20px;
+  height: 20px;
+  margin: auto;
+}
+.footer .foot-left .left-icon image {
+  width: 100%;
+  height: 100%;
+}
+.footer .foot-left .left-txt {
+  font-size: 22rpx;
+  color: #999999;
+}
+.footer .foot-left .cs-icon {
+  width: 20px;
+  height: 30px;
+  margin: auto;
+}
+
+.footer .foot-right {
+  float: right;
+  background-color: #ffda29;
+  height: 100%;
+  text-align: center;
+  padding: 0px 18px;
+  line-height: 50px;
+}
+.footer .foot-right .right-btn {
+  display: inline;
+}
+/* 弹出层 */
+.fs-popup {
+  display: none;
+}
+.fs-popup-show {
+  display: block !important;
+}
+/* 服务说明 */
+.fs-popup2 {
+  display: none;
+}
+.fs-popup-show2 {
+  display: block !important;
+}
+.fs-popup-dialog {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  background-color: white;
+  z-index: 992;
+}
+.fs-popup-mask {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  opacity: 0.5;
+  z-index: 991;
+}
+/* 弹出层内容 -- 选择商品规格 */
+.choose-head {
+  padding: 20px 15px;
+  border-bottom: 1rpx solid #dddddd;
+  position: relative;
+  height: 200rpx;
+}
+.choose-head .close {
+  position: absolute;
+  right: 6px;
+  top: 5px;
+  width: 25px;
+  height: 25px;
+}
+.choose-head .close image {
+  width: 100%;
+  height: 100%;
+}
+.choose-head .head-img {
+  width: 200rpx;
+  height: 200rpx;
+  display: inline-block;
+}
+.choose-head .head-img image {
+  width: 100%;
+  height: 100%;
+}
+.choose-head .head-info {
+  display: inline-block;
+  line-height: 40rpx;
+  position: relative;
+  top: -40rpx;
+  padding-left: 15px;
+  font-size: 32rpx;
+  color: #000000;
+  max-width: 210px;
+}
+.choose-head .head-info .info-price {
+  font-size: 32rpx;
+  color: #ff4754;
+  font-family: PingFangSC-Medium;
+}
+.choose-head .head-info .info-oneMonthPrice {
+  padding: 5px 0px 0px 0px;
+}
+.choose-head .head-info .info-inventory {
+  padding: 5px 0px;
+}
+.choose-head .head-info .info-selected {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.choose-head .head-info .info-selected view {
+  display: inline;
+}
+.choose-head .head-info .price-title {
+  font-size: 22rpx;
+  color: #888888;
+}
+.choose-head .head-info .price-symbol {
+  font-size: 20rpx;
+  color: #888888;
+}
+.choose-head .head-info .price-num {
+  font-size: 28rpx;
+  color: #888888;
+}
+.choose-item-con {
+  max-height: 260px;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 10px;
+}
+.choose-item {
+  padding: 5px 15px;
+}
+.choose-item .item-type {
+  font-size: 14px;
+  color: #000000;
+  margin-bottom: 5px;
+  font-family: PingFangSC-Medium;
+}
+.choose-item .item-kind .kind-btn {
+  display: inline-block;
+  color: #000000;
+  border: 1rpx solid #ccc;
+  border-radius: 12px;
+  padding: 4px 16px;
+  font-size: 12px;
+  line-height: 15px;
+  margin: 8px 0px;
+  margin-right: 8px;
+}
+.btn-golden {
+  background-color: #ffda29 !important;
+  border: 0px !important;
+}
+.btn-gray {
+  border: 1rpx solid #f5f2f2 !important;
+  color: #d4d0d0 !important;
+}
+.added-service {
+  padding: 0px 15px;
+}
+.added-service .service-head {
+  font-size: 14px;
+  color: #000000;
+}
+.added-service .service-con {
+  padding-top: 10px;
+  line-height: 26px;
+}
+
+.service-shortdesc {
+  font-size: 24rpx;
+  font-family: PingFangSC-Regular;
+  color: rgba(136, 136, 136, 1);
+  line-height: 33rpx;
+}
+
+.added-service .service-con .radio-group .radio {
+  width: 100%;
+}
+.added-service .service-con .radio-group radio:checked {
+  color: red;
+  background-color: red;
+}
+.added-service .service-con .con-img {
+  position: relative;
+  top: 5px;
+  width: 44rpx;
+  height: 44rpx;
+}
+.added-service .service-con .con-txt {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 14px;
+  position: relative;
+  top: -1px;
+  color: #666666;
+}
+.added-service .service-con .con-price {
+  position: relative;
+  top: 4px;
+  float: right;
+  font-size: 14px;
+  color: #666666;
+}
+.added-service .service-detail {
+  font-size: 12px;
+  padding-top: 8px;
+  padding-bottom: 5px;
+  text-indent: 1em;
+}
+
+.foot-btn {
+  width: 95%;
+  margin: auto;
+  margin-top: 10px;
+  padding-bottom: 15px;
+}
+.foot-btn button {
+  background: rgba(221, 221, 221, 1);
+  border-radius: 22px;
+  border: 0px;
+  color: #ffffff;
+}
+.foot-btn.active button {
+  background-color: #ffda29;
+  color: #000000;
+}
+/* 弹出层内容 -- 服务说明 */
+.service-note {
+  padding-bottom: 25px;
+}
+.service-note .note-head {
+  font-size: 32rpx;
+  color: #000000;
+  text-align: center;
+  padding-top: 30px;
+}
+.service-note .info-item {
+  font-size: 14px;
+  color: #000000;
+  width: 100%;
+  padding: 15px 15px;
+  padding-bottom: 0px;
+}
+.service-note .info-item .item-icon {
+  display: inline-block;
+  width: 15px;
+  height: 14px;
+  position: relative;
+  top: 3px;
+  padding-right: 5px;
+}
+.service-note .info-item .item-icon image {
+  width: 100%;
+  height: 100%;
+}
+.service-note .info-item .item-txt {
+  display: inline-block;
+}
+.service-note .info-item .item-detail {
+  font-size: 12px;
+  color: #999999;
+  padding-top: 10px;
+}
+.close-dialog {
+  font-size: 18px;
+  color: #000000;
+  text-align: center;
+  height: 100rpx;
+  line-height: 100rpx;
+}
+.feeplane-infoText {
+  padding: 0px 5px 0px 5px;
+  color: #999999;
+  width: 26px;
+  height: 16px;
+}
+
+.feeplane-infoicon {
+  position: relative;
+  top: 2px;
+  color: #999999;
+  width: 16px;
+  height: 16px;
+  background-size: contain;
+}
+
+.service-icon {
+  width: 20rpx;
+  height: 20rpx;
+}
+
+@media screen and (max-width: 320px) {
+  .brief-info .info-item {
+    font-size: 10px;
+  }
+  .brief-info .info-item .item-icon {
+    width: 13px;
+    height: 12px;
+    top: 3px;
+  }
+  .brief-info .info-item-more {
+    padding: 13px;
+    top: 0px;
+  }
+}
+/* 优惠券 */
+.am-popup-content {
+  max-height: 950rpx;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.couponPopup {
+  background: #ffffff;
+  max-height: 950rpx;
+}
+.coupons {
+  background: #fff;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+  position: relative;
+  max-height: 845rpx;
+}
+.close-img {
+  width: 30rpx;
+  height: 30rpx;
+  position: absolute;
+  top: 30rpx;
+  right: 30rpx;
+  z-index: 1;
+}
+
+.coupons .am-card::before {
+  background: #fff;
+}
+.coupons .am-card::after {
+  background: #fff;
+}
+.coupons-title {
+  font-size: 32rpx;
+  line-height: 45rpx;
+  margin: 30rpx;
+  display: flex;
+  justify-content: space-between;
+}
+
+.feeplane-infoicon {
+  position: relative;
+  top: 4rpx;
+  color: #999999;
+  width: 32rpx;
+  height: 32rpx;
+  background-size: contain;
+  margin-left: 8rpx;
+}
+
+.instruction {
+  padding: 30rpx 0 30rpx 30rpx;
+  font-size: 28rpx;
+  color: #222;
+}

@@ -1,0 +1,20 @@
+<import src="../../component/alipayBiz/list/index.axml" />
+<view class="minePage">
+  <view class="minePage-item">
+    <template is="List" data={{...listData}}>
+    </template>
+  </view>
+  <view class="contact">
+    <view class="contact-line">
+    </view>
+    <view class="contact-content">
+      <text>客服电话：
+      </text>
+      <text class="contactNum" selectable={{true}} onTap="makePhoneCall">{{phone}}
+      </text>
+    </view>
+  </view>
+  <view class="service-icon" >
+    <contact-button size="50" tnt-inst-id="HLATCNCN" scene="SCE00007449" icon="/image/kf.png"/>
+  </view>
+</view>

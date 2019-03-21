@@ -1,0 +1,56 @@
+@import "/common/css/common.acss";
+@import '../../component/alipayBiz/list/index.acss';
+.a-page {
+    overflow: hidden;
+}
+.minePage{
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.minePage-item{
+    flex:1;
+}
+.contact{
+    flex:0 0 60rpx;
+    position: relative;
+    text-align: center;
+    font-size: 28rpx;
+}
+
+.contact-line{
+    position: absolute;
+    height: 1rpx;
+    background: #999;
+    top:14rpx;
+    left:150rpx;
+    right: 150rpx;
+}
+
+.contact-content{
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    background: #F7F7F7;
+    padding: 0 40rpx;
+}
+
+.contactNum{
+    color: #2e8bfb;
+}
+
+
+.a-list{
+    border-bottom: 0.5px solid #ddd;
+}
+.a-list .a-list-items .a-list-item{
+    min-height: 90rpx;
+}
+
+.a-list .a-list-item .a-list-item-content
+{
+    font-size: 32rpx;
+    color: #000;
+}

@@ -1,0 +1,29 @@
+.helpCenter{
+    background-color: #fff;
+    width: 100%;
+    padding: 0 40rpx;
+}
+
+.title{
+    width: 100%;
+    font-size: 32rpx;
+    text-align: center;
+    padding: 40rpx 0;
+}
+
+.item{
+    margin-bottom: 30rpx;
+}
+
+.question{
+    font-size: 28rpx;
+    color: #000;
+    line-height: 36rpx;
+    margin-bottom: 10rpx;
+}
+
+.answer{
+    font-size: 24rpx;
+    color:#999;
+    line-height: 36rpx;
+}

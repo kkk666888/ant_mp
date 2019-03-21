@@ -1,0 +1,33 @@
+.Coupons {
+  width: 100%;
+}
+.am-tabs {
+  height: 100%;
+}
+
+.am-tabs-content-wrap {
+  background: rgba(247, 247, 247, 1);
+}
+.tab-content {
+  padding-bottom: 20rpx;
+}
+.tabActive {
+  color: #222;
+  font-weight: bold;
+}
+
+.feeplane-infoicon {
+  position: relative;
+  top: 4rpx;
+  color: #999999;
+  width: 32rpx;
+  height: 32rpx;
+  background-size: contain;
+  margin-left: 8rpx;
+}
+
+.instruction {
+  padding: 30rpx 0 30rpx 30rpx;
+  font-size: 28rpx;
+  color: #222;
+}

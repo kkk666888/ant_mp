@@ -1,0 +1,11 @@
+<view class="helpCenter">
+  <view class="title"> <text>关于产品租赁服务店</text> </view>
+  <view class="item" a:for="{{ questions }}" key="{{ item.question }}">
+    <view class="question">
+      <text>{{ item.question }}</text>
+    </view>
+    <view class="answer" a:for="{{ item.answers }}" a:for-item="answer">
+      <text>{{ answer }}</text>
+    </view>
+  </view>
+</view>

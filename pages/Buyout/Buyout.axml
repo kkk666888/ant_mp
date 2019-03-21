@@ -1,0 +1,94 @@
+<view class="buyout">
+    <view class="buyout-content" a:if="commodityInfo">
+        <!-- 商品信息 -->
+      <view class="header bg-white">
+        <view class="header-img-wrapper">
+          <image class="header-img" src="{{buyoutProductInfo.commodityUrl}}" alt="">
+        </view>
+        <view class="header-right">
+          <view class="header-title">{{buyoutProductInfo.commodityShortName}}</view>
+          <view class="header-des f12 gray">规格：{{buyoutProductInfo.commodityCategory.split(',').join('/')}}</view>
+          <view class="header-fee">租金：￥{{commodityInfo.orderProduct.avgRentAmt.toFixed(2)}}/天</view>
+          <view class="header-tag" >
+            <image class="zhima-img" src="/image/common/zhima_label1_2x.png" alt="芝麻信用免押金">
+          </view>
+        </view>
+      </view>
+      <!-- 主动买断信息 -->
+      <view a:if="{{buyoutType == 1}}">
+        <view class="bg-white pt12 buyout-section">
+          <view class="item gray ">
+            <view class="item-left">商品买断价</view>
+            <view class="item-right">￥{{commodityInfo.buyOutPrice}}</view>
+          </view>
+          <view class="item gray mt30">
+            <view class="item-left">已支付租金</view>
+            <view class="item-right">￥{{commodityInfo.payRentAmt}}</view>
+          </view>
+          <view class="item black mt30">
+            <view class="item-left ">需支付买断金</view>
+            <view class="item-right ">￥{{commodityInfo.actualBuyOutAmt}}</view>
+          </view>
+          <view class="item black mt30" a:if="{{commodityInfo.cashOffsetAmt}}">
+            <view class="item-left">物主卡抵扣</view>
+            <view class="item-right">-￥{{commodityInfo.cashOffsetAmt}}</view>
+          </view>
+          <view class="item black mt30" a:if="{{commodityInfo.cashDeductionAmt}}">
+            <view class="item-left">个人账户抵扣</view>
+            <view class="item-right">-￥{{commodityInfo.cashDeductionAmt}}</view>
+          </view>
+        </view>
+      </view>
+      <!-- 强制买断 -->
+      <view a:if="{{buyoutType == 2}}">
+        <view class="bg-white pt12 buyout-section">
+          <view class="item gray ">
+            <view class="item-left">商品买断价</view>
+            <view class="item-right">￥{{commodityInfo.buyOutPrice}}</view>
+          </view>
+          <view class="item gray mt30">
+            <view class="item-left">已支付租金</view>
+            <view class="item-right">￥{{commodityInfo.paidRentAmt}}</view>
+          </view>
+          <view a:for="{{commodityInfo.buyoutFeeInfoList}}" a:for-item="fee">
+            <view class="item lh-14 mt15 f14">
+              <text class="item-left">{{fee.feeName}}</text>
+              <text class="item-right">￥{{fee.feeAmt}}</text>
+            </view>
+          </view>
+          <view class="item black mt30" a:if="{{commodityInfo.cashOffsetAmt}}">
+            <view class="item-left">物主卡抵扣</view>
+            <view class="item-right">-￥{{commodityInfo.cashOffsetAmt}}</view>
+          </view>
+          <view class="item black mt30" a:if="{{commodityInfo.cashDeductionAmt}}">
+            <view class="item-left">个人账户抵扣</view>
+            <view class="item-right">-￥{{commodityInfo.cashDeductionAmt}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="splitline"></view>
+      <view class="buyout-section bg-white">
+        <view class="item black">
+          <view class="item-left ">实际应付</view>
+          <view class="item-right ">￥{{commodityInfo.finalActualPayAmt.toFixed(2)}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="gray lh30 f12 buyout-tips">
+      买断金支付成功后，订单中原冻结的押金（若有）将会自动解冻，原路退回。
+    </view>
+    <!-- 按钮协议 -->
+    <view class=" p-r submit-wrap">
+      <view class="readProtocolPlane" a:if="{{remindProtocol}}">
+        <view class="readProtocolPlane-top">请先阅读并同意协议</view>
+        <canvas class="canvasElement" id="canvas"></canvas>
+      </view>
+      <view class="protocol-checked">
+        <view onTap="onCheckBoxClick"><image src="{{checkImgUrl}}" class="infoicon icon-checked" mode="center" /></view>
+        <view class="fz28 lh44">我已阅读并同意<text class="blue" onTap="protocolClick">《用户租赁及服务协议之买断协议》</text></view>
+      </view>
+      <view class="btn mt40 pb15">
+        <button onTap="submitOrder" class="{{checkBtn}}">确认买断</button>
+      </view>
+    </view>
+  </view>

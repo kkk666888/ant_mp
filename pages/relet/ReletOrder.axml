@@ -1,0 +1,65 @@
+<view class="orderSubmit">
+    <!--商品详情面板-->
+    <view class="goodsPlane">
+        <view class="goodsImageBox">
+            <image class="goodsImage" mode="scaleToFill" src="{{goodsDetail.listImg}}"  />
+        </view>
+        <view>
+            <view class="goodsfullname">{{goodsDetail.fullName}}</view>
+            <view class="goods-source-date">原租期：{{goodsDetail.sourceStartDate}}-{{goodsDetail.sourceEndDate}}</view>
+            <view class="goods-rentday">租金：¥{{goodsDetail.dayAvgRentAmt}}/天</view>
+            <text class="goods-zima" a:if="{{orderCreditAmtShow}}">芝麻信用·免押金</text>
+        </view>
+    </view>
+    <!--费用列表-->
+    <view class="feePlane">
+        <view class="fee-section1">
+            <view class="flexBox">
+                <view class="flexLeft fee-black-font-left">续租租金</view>
+                <view class="flexRight fee-black-font-right">￥{{goodsDetail.reletAvgRentAmt}}/天</view>
+            </view>
+            <!--增值服务列表部分-->
+            <view class="added-service">
+                <view class="service-head">增值服务</view>
+                <view a:for="{{ currServices }} ">
+                    <view class="service-con">
+                        <image class="con-img" data-feeItem="{{item}}" src="{{item.imgUrl}}" onTap="feeClick"></image>
+                        <view class="con-txt" data-feeItem="{{item}}" a:if="{{item.isCancelled === '0'}}" >{{ item.feeName }}(必选)</view>
+                        <view class="con-txt" data-feeItem="{{item}}" a:else >{{ item.feeName }}</view>
+                        <text data-feeItem="{{item}}" onTap="feeIconClick" class="feeplane-infoText">
+                            <image src="/image/orderSubmit/icon_help_3x.png" class="feeplane-infoicon" mode="aspectFit" />
+                        </text>
+                    </view>
+                    <view class="service-shortdesc">{{ item.feeShortDesc }}</view>
+                </view>
+            </view>
+            <!-- 续租租期 -->
+            <view class="choose-item">
+                <view class="item-type">续租租期</view>
+                <view class="item-tips">续租成功后，将于原订单到期后，自动开始生效。</view>
+                <view class="item-kind">
+                    <view a:for="{{financeProductList}}" a:for-index="dayIndex" a:for-item="dayItem" class="{{dayItem.cssName}}" data-dayItem="{{dayItem}}" onTap="financialItemClick">
+                {{ dayItem.totalDays }}天
+                    </view>
+                </view>
+            </view>
+            <!-- 支付方式 -->
+            <view class="choose-item">
+                <view class="item-type">支付方式</view>
+                <view class="item-kind">
+                    <view a:for="{{payStyleArray}}" a:for-index="payIndex" a:for-item="payItem" class="{{payItem.cssName}}" data-payItem="{{payItem}}" onTap="payItemClick">
+                {{ payItem.name }}
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <!--提交订单按钮-->
+    <view class="menuPlane">
+        <view class="menuplane-sectionbutton">
+            <button class="submitBtn" onTap="confirmOrder">提交订单</button>
+        </view>
+    </view>
+    <!--基础信息的展示-->
+    <info-alert dialogTitle="{{toastTitle}}" dialogContent="{{toastContent}}" onHideBtnClick="onHideToastClick" a:if="{{showToast}}"/>
+</view>

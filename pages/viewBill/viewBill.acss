@@ -1,0 +1,134 @@
+@import '/common/css/index.acss';
+.viewBill{
+    width: 100%;
+    background-color: #fff;
+}
+
+.header{
+    padding:40rpx 30rpx 0 30rpx;
+}
+
+.flexContainer{
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    padding-bottom: 30rpx;
+}
+
+.header .left{
+    flex:0 0 160rpx;
+}
+
+.header .right{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 28rpx;
+}
+
+.img{
+    width: 160rpx;
+    height: 160rpx;
+}
+
+.name{
+    color: #000;
+    font-size: 28rpx;
+    margin-bottom: 10rpx;
+}
+
+.size{
+    color: #999;
+    font-size: 24rpx;
+    margin-bottom: 10rpx;
+}
+
+.rentAmount{
+    color: #000;
+    font-size: 28rpx;
+    margin-bottom: 12rpx;
+}
+.zhimaImg{
+    width: 170rpx;
+    height: 30rpx;
+}
+
+.money{
+    font-size: 32rpx;
+    color: #000;
+    margin-bottom: 8rpx;
+}
+.mark{
+    font-size: 24rpx;
+    color: #999;
+}
+
+.moneyItem .flex-container{
+    padding: 38rpx 0;
+}
+
+.noticeImg{
+    width: 24rpx;
+    height: 24rpx;
+    margin-right: 6rpx;
+    position: relative;
+    top: 4rpx;
+}
+
+.mark2{
+    color: #999;
+    font-size: 24rpx;
+    text-align: center;
+    padding-bottom: 36rpx;
+}
+
+.border{
+    height: 20rpx;
+    background-color: #f2f2f2;
+}
+
+.itemDetail{
+    padding-left: 30rpx;
+}
+
+.itemDetail .periods{
+    padding: 34rpx 30rpx;
+    border-bottom: 1px solid #ddd;
+}
+
+.itemDetail .periods .flex-container:first-child{
+    margin-bottom: 21rpx;
+}
+
+.itemDetail .label1{
+    color: #999;
+    font-size: 24rpx;
+}
+
+.itemDetail .label2{
+    color: #000;
+    font-size: 28rpx;
+}
+
+.itemDetail .label3{
+    color: #000;
+    font-size: 40rpx;
+}
+
+.itemDetail .label4{
+    color: #999;
+    font-size: 24rpx;
+}
+
+.hasBeenPayment{
+    background-color: #F7F7F7
+}
+.hasBeenPayment .label1,
+.hasBeenPayment .label2,
+.hasBeenPayment .label3,
+.hasBeenPayment .label4{
+    color: #bbb;
+}
+.money-mark{
+    font-size: 24rpx;
+    display: inline-block;
+}

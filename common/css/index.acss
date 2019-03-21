@@ -1,0 +1,103 @@
+/* 清除浮动 */
+.clear-float:after {
+  display: block;
+  content: '.';
+  height: 0;
+  line-height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+/*弹性布局*/
+.flex-container {
+  display: flex;
+}
+
+.align-item-left {
+  align-items: left;
+}
+.align-item-center {
+  align-items: center;
+}
+.align-item-right {
+  align-items: right;
+}
+
+.align-left {
+  text-align: left;
+}
+.align-center {
+  text-align: center;
+}
+.align-right {
+  text-align: right;
+}
+
+.flex-column {
+  flex: 1;
+}
+
+.flex-column-100 {
+  flex: 0 0 100rpx;
+}
+.flex-column-100 {
+  flex: 0 0 100rpx;
+}
+.flex-column-200 {
+  flex: 0 0 200rpx;
+}
+.flex-column-300 {
+  flex: 0 0 300rpx;
+}
+
+.flex-column-per-10 {
+  flex: 0 0 10%;
+}
+.flex-column-per-20 {
+  flex: 0 0 20%;
+}
+.flex-column-per-30 {
+  flex: 0 0 30%;
+}
+.flex-column-per-40 {
+  flex: 0 0 40%;
+}
+.flex-column-per-50 {
+  flex: 0 0 50%;
+}
+.flex-column-per-60 {
+  flex: 0 0 60%;
+}
+.flex-column-per-70 {
+  flex: 0 0 70%;
+}
+.flex-column-per-80 {
+  flex: 0 0 80%;
+}
+.flex-column-per-90 {
+  flex: 0 0 90%;
+}
+
+/* margin */
+.mt15 {
+  margin-top: 30rpx;
+}
+
+/* 按钮颜色 */
+.submitBtn {
+  background: #ffda29;
+  border-radius: 44rpx;
+  font-size: 36rpx;
+  border: none;
+  height: 88rpx;
+  line-height: 90rpx;
+}
+
+.submitBtnHL {
+  background: rgba(255, 196, 0, 0.4);
+  border-radius: 44rpx;
+  font-size: 36rpx;
+  border: none;
+  height: 88rpx;
+  line-height: 90rpx;
+}

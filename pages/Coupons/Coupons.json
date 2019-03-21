@@ -1,0 +1,9 @@
+{
+  "defaultTitle": "我的优惠券",
+  "usingComponents": {
+    "tabs": "mini-antui/es/tabs/index",
+    "tab-content": "mini-antui/es/tabs/tab-content/index",
+    "info-alert": "/component/InfoDescAlert/InfoDescAlert",
+    "custom-card": "/component/CustomCard/CustomCard"
+  }
+}

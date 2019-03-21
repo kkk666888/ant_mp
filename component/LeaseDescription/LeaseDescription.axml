@@ -1,0 +1,74 @@
+<view class="lease-description">
+  <view a:if="{{ isShowAdvantage }}" class="description-item">
+    <view class="advantage">
+      <view class="item-title">租赁优势</view>
+      <view class="item-con">
+        <view class="adv-title">
+          <view class="span">{{ advTitle }}</view>
+        </view>
+        <view class="adv-compare-con clearfix">
+          <view class="adv-compare compare-left">
+            <view class="compare-txt"><view class="span">{{ leftDay }}</view>天物主租金总额</view>
+            <view class="compare-price">
+              <view class="price span">{{ leftPrice }}</view>
+              <view class="unit span">元</view>
+            </view>
+          </view>
+          <view class="adv-vs">
+            <view class="span">vs</view>
+          </view>
+          <view class="adv-compare compare-right">
+            <view class="compare-txt">全款购买</view>
+            <view class="compare-price">
+              <view class="price span">{{ rightPrice }}</view>
+              <view class="unit span">元</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="description-item">
+    <view class="maturity">
+      <view class="item-title">到期可选择</view>
+      <view class="item-con">
+        <view class="ul">
+          <view class="li">• 归还：快递上门取件寄回</view>
+          <view class="li">• 续租：到期可续租产品，续租专享租金优惠</view>
+          <view class="li">• 买断：仅需在已支付租金基础上，补齐商品下单时市场价</view>
+          <view class="li">• 如是租完即送商品则到期免归还直接拥有</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="description-item">
+    <view class="process">
+      <view class="item-title">租赁流程</view>
+      <view class="item-con">
+        <view class="bg-img"></view>
+        <!-- <img class="process-bg" src="./process_bg.png" /> -->
+        <!-- <view class="item-box">
+          <span>1.选定商品</span>
+        </view>
+        <span class="box-arrow">></span> -->
+      </view>
+    </view>
+  </view>
+  <view class="description-item">
+    <view class="rules">
+      <view class="item-title">租期规则</view>
+      <view class="item-con">
+        <view class="rules-txt">租期计算规则：从签收的第二天开始计算租期，以租品寄回的前一天作为结束日<view class="span">（以快递跟踪记录为准）</view></view>
+        <view class="rules-sample">示例如下：（A同学计划 01 号收到快递，06号发快递寄回机器，因此他的租用行程为：02号起租-05号退租，租期4天）</view>
+        <!-- <view class="rules-tip">
+          <span class="tip-title">*Tip：</span>
+          <span class="tip-txt">归还前请与客服确认物流方式及地址</span>
+        </view> -->
+        <view class="rules-img">
+          <view class="bg-rules-img"></view>
+          <!-- <img src="./rules_img.png" /> -->
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

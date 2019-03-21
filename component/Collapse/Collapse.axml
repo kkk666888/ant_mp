@@ -1,0 +1,20 @@
+  <view class="a-collapse">
+    <view class="a-collapse-module">
+      <view class="classify">
+        <text class="classify-title">{{title}}</text>
+      </view>
+      <view class="collapse-box" a:for={{questions}} a:for-item="item">
+        <view
+          class="{{item.expanded ? 'a-collapse-title' : 'a-collapse-title a-collapse-border'}}"
+          onTap="onTitleTap"
+          data-index={{index}}
+        >
+          <text>{{item.question}}</text>
+          <view class="{{item.expanded ? 'a-collapse-title-arrow a-collapse-title-arrow-up' : 'a-collapse-title-arrow'}}" />
+        </view>
+        <view class="a-collapse-content" a:if={{item.expanded}}>
+          <text>{{item.answers}}</text>
+        </view>
+      </view>
+    </view>
+  </view>

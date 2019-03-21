@@ -1,0 +1,8 @@
+.service-icon {
+  position: fixed;
+  /* top: 45%; */
+  bottom:10%;
+  right: 30rpx;
+  width: 100rpx;
+  height: 100rpx;
+}

@@ -1,0 +1,21 @@
+<!--弹框提示-->
+<view class="successToast">
+  <!--mark-->
+  <view class="mask"></view>
+  <!--content-->
+  <view class="content">
+    <!--具体的内容板块-->
+    <view class="contentwrap">
+      <!--标题-->
+      <view class="white-radicus">
+        <view class="alertTitle" >
+          <image class="icon-image" src="/image/common/success_black.png" mode="aspectFit"/>
+        </view>
+        <!--内容-->
+        <view class="contentDetail">
+          {{dialogContent}}
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

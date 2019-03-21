@@ -1,0 +1,243 @@
+@import './../../common/fontIcon/iconfont.acss';
+/*整个页面*/
+.order-detail {
+  width: 100%;
+  background-color: #f7f7f7;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', SimSun, sans-serif;
+}
+.f-bold {
+  font-weight: bold;
+}
+.f18 {
+  font-size: 36rpx;
+}
+.f12 {
+  font-size: 12px;
+}
+.f14 {
+  font-size: 28rpx;
+}
+.pt40 {
+  padding-top: 36rpx;
+}
+.pt30 {
+  padding-top: 22rpx;
+}
+.pt68 {
+  padding-top: 60rpx;
+}
+.mb10 {
+  margin-bottom: 20rpx;
+}
+.mb8 {
+  margin-bottom: 16rpx;
+}
+.f-gray {
+  color: #999;
+}
+.opacity-p5 {
+  font-family: PingFangSC-Regular;
+  opacity: 0.5;
+}
+.btn-control-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.btn-control {
+  display: flex;
+  justify-content: flex-end;
+  padding: 26rpx 30rpx;
+  border-top: 1px solid #ddd;
+  background-color: #fff;
+}
+.btn-control > button {
+  width: 160rpx;
+  height: 48rpx;
+  margin-right: 20rpx;
+  line-height: 48rpx;
+  font-size: 12px;
+  color: #111;
+  border-radius: 24rpx;
+  border: 1rpx solid rgba(204, 204, 204, 1);
+}
+.btn-control > button:last-child {
+  margin-right: 0;
+}
+.btn-control > button.bb-yellow {
+  color: #000;
+  background: #ffc400;
+  border: 1rpx solid #ffc400;
+}
+.header {
+  background-color: #ffda29;
+  padding: 0 40rpx;
+  height: 260rpx;
+  color: #000;
+}
+.order-status-wrapper {
+  height: 200rpx;
+}
+.order-status {
+  line-height: 44rpx;
+}
+.order-status:before {
+  display: inline-block;
+  content: '';
+  width: 44rpx;
+  height: 44rpx;
+  vertical-align: middle;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-right: 4px;
+}
+.order_cancel:before {
+  background-image: url('/image/common/order_cancel_2x.png');
+}
+.order_stay:before {
+  background-image: url('/image/common/order_stay_2x.png');
+}
+.order_mail:before {
+  background-image: url('/image/common/order_mail_2x.png');
+}
+.order_leasing:before {
+  background-image: url('/image/common/order_complete_2x.png');
+}
+.order_complete:before {
+  background-image: url('/image/common/order_complete_2x.png');
+}
+.order_recycleing:before {
+  background-image: url('/image/common/order_mail_2x.png');
+}
+/*公用部分*/
+.blackMediaFont {
+  color: #888;
+  font-size: 14px;
+  font-family: 'PingFang SC';
+}
+/*用户面板*/
+.userPlane {
+  background: white;
+  border-bottom: 5px solid #ffda29;
+  padding: 20px 15px;
+  margin-bottom: 10px;
+}
+
+.userPlane-name {
+  color: #000000;
+  font-size: 16px;
+  margin-right: 20px;
+}
+
+.userPlane-phone {
+  color: #000000;
+  font-size: 16px;
+}
+
+.userplane-second {
+  margin-bottom: 10px;
+  margin-top: 5px;
+  display: flex;
+}
+
+.userplane-address-icon {
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+}
+
+.userplane-address {
+  line-height: 20px;
+}
+
+.userplane-reminder {
+  font-size: 10px;
+  margin-top: 10px;
+  color: #999;
+}
+
+/*商品详情面板*/
+.goodsPlane {
+  padding: 20px 15px;
+  display: flex;
+  background: white;
+  margin-bottom: 10px;
+}
+
+/*费用列表面板*/
+.feePlane {
+  background: white;
+  margin-bottom: 11px;
+  color: #333;
+}
+
+.fee-section1 {
+  border-bottom: 1px solid #dddddd;
+  padding: 15px 20px;
+}
+
+.fee-section2 {
+  padding: 15px 20px;
+}
+
+.fee-section3{
+	border-top: 1px solid #DDDDDD;
+	padding: 15px 20px;
+}
+
+.insureEndTime {
+  font-size: 24rpx;
+  margin-top: 14rpx
+}
+.flexBox{
+	display: flex;
+  font-size: 28rpx;
+	justify-content: space-between;
+	margin-bottom: 30rpx;
+  align-items:baseline;
+  flex-wrap: wrap;
+}
+.flexRight{
+  vertical-align: text-bottom;
+}
+.flexBox:last-child {
+  margin-bottom: 0;
+}
+.feeplane-infoText {
+  padding: 0px 5px 0px 5px;
+  color: #999999;
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.feeplane-infoicon {
+  position: relative;
+  top: 2px;
+  color: #999999;
+  width: 32rpx;
+  height: 32rpx;
+  background-size: contain;
+}
+
+/*用户注册协议以及确认订单的按钮*/
+.time-control {
+  padding: 15px 20px;
+  background: white;
+}
+.img {
+  width: 85px;
+  height: 15px;
+  background-image: url('/image/common/zhima_label1_2x.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.btn-margin {
+  width: 20rpx;
+}
+
+.line-through {
+  text-decoration: line-through;
+}

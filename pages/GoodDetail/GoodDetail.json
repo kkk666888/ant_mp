@@ -1,0 +1,10 @@
+{
+  "defaultTitle": "商品详情",
+  "usingComponents": {
+    "lease-description": "/component/LeaseDescription/LeaseDescription",
+    "info-alert": "/component/InfoDescAlert/InfoDescAlert",
+    "popup": "mini-antui/es/popup/index",
+    "custom-card": "/component/CustomCard/CustomCard",
+    "collapse": "/component/Collapse/Collapse"
+  }
+}
