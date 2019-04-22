@@ -129,13 +129,19 @@
         <view class="flexRight fee-black-font-right">-¥{{feeDetail.orderCreditAmt}}
         </view>
       </view>
+      <view class="flexBox" a:if="{{deepFreeAmountShow}}">
+        <view class="flexLeft fee-black-font-left">身份认证减免金
+        </view>
+        <view class="flexRight fee-black-font-right">-¥{{feeDetail.deepFreeAmount}}
+        </view>
+      </view>      
       <view class="flexBox">
         <view class="flexLeft fee-black-font-left">需冻结押金
         </view>
         <view class="flexRight fee-black-font-right">¥{{feeDetail.payDepositAmt}}
         </view>
       </view>
-      <view class="flexBox" style="margin-bottom: 0" a:if="{{aliPayShow}}">
+      <view class="flexBox" a:if="{{aliPayShow}}">
         <view class="flexLeft fee-gray-font">押金冻结方式
         </view>
         <view class="flexRight">
@@ -147,6 +153,11 @@
           <!--<text class="icon iconfont icon-bangzhu feeplane-infoicon" onTap="alipayAccreditClick"></text>-->
         </view>
       </view>
+      <!-- <view class="supply-info" > -->
+        <text class="supply-info-text" a:if="{{showSupplyInfo}}" onTap="gotoIDOcr">
+          点击补充资料，减免更多押金
+        </text>
+      <!-- </view> -->
     </view>
   </view>
   <!--协议预计提交订单按钮-->
@@ -164,7 +175,7 @@
       <view class="protocol-div">
         <text>我已阅读并同意
         </text>
-        <text class="protocolText" a:for="{{protocolList}}" a:for-index="idx" data-Index="{{idx}}" data-ItemName="{{itemName}}" a:for-item="itemName" onTap="protocolClick">《{{itemName}}》
+        <text class="protocolText" a:for="{{protocolList}}" data-item="{{item}}" a:for-item="item" onTap="protocolClick">《{{item.templateName}}》
         </text>
       </view>
     </view>

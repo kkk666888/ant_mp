@@ -7,7 +7,7 @@
     </view>
     <view a:if="{{success}}">
       <view class="icon-label" >订单预约成功~</view>
-      <view class="icon-label-gray">尊敬的客户，您的订单预约成功， 您的订单预约成功，24h内将代扣首期费用，代扣成功后，我们将为您尽快送货，若代扣失败，订单自动取消，如有押金被冻结，额度将即刻恢复。</view>
+      <view class="icon-label-gray">尊敬的客户，你的订单预约成功，24h内将代扣首期费用，代扣成功后，我们将为你尽快送货，若代扣失败，订单自动取消，如有押金被冻结，额度将即刻恢复。</view>
     </view>
     <view class="" a:else>
       <view class="icon-label">{{errorTitle}}</view>
@@ -42,7 +42,7 @@
           <view class="flexLeft fee-gray-font">首期应付</view>
           <view class="flexRight fee-gray-font">￥{{feeDetail.totalMoney}}</view>
         </view>
-        <text class="fee-reminder">月租金将于次月通过支付宝免密支付的方式还款</text>
+        <text class="fee-reminder">第2期开始的月租金，将通过支付宝免密支付代扣</text>
       </view>
       <view class="fee-section2">
         <view class="flexBox" a:if="{{depositAmtShow}}">
@@ -52,6 +52,10 @@
         <view class="flexBox" a:if="{{orderCreditAmtShow}}">
           <view class="flexLeft fee-black-font">芝麻信用免押金</view>
           <view class="flexRight fee-black-font">-¥{{feeDetail.orderCreditAmt}}</view>
+        </view>
+        <view class="flexBox" a:if="{{deepFreeAmountShow}}">
+          <view class="flexLeft fee-black-font">身份认证减免金</view>
+          <view class="flexRight fee-black-font">-¥{{feeDetail.deepFreeAmount}}</view>
         </view>
         <view class="flexBox">
           <view class="flexLeft fee-black-font">已冻结押金</view>

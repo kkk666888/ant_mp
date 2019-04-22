@@ -247,6 +247,11 @@ Page({
   },
   // 点击 banner 图
   bannerClick(e) {
+    // my.navigateTo({
+    //   // url: '/pages/IDOcr/IDOcr'
+    //   url: '/pages/OrderSubmitPage/OrderSubmitPage'
+    // });
+    // return;
     let idx = e.target.dataset.idx;
     let _bannerData = this.data.bannerData[idx];
 

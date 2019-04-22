@@ -12,7 +12,6 @@ Page({
   },
   onLoad(query) {
     this.setData({
-      // orderNo: '00220180625Q001433108428'
       orderNo: query.orderNo
     });
     this.getRouteInfo();

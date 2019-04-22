@@ -16,7 +16,9 @@
     "pages/viewBill/viewBill",
     "pages/relet/ReletOrder",
     "pages/ActivityHtml/ActivityHtml",
-    "pages/Coupons/Coupons"
+    "pages/Coupons/Coupons",
+    "pages/IDOcr/IDOcr",
+    "pages/NewOrderWait/NewOrderWait"
   ],
   "window": {
     "defaultTitle": "物主租赁"

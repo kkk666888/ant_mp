@@ -1,6 +1,6 @@
 import http from '/util/http';
 import Config from '/util/config';
-import { getFeeDescStr, getLeaseStyleDesc, getPayStayleEnum } from '/util/wuzhuUtil';
+import { getFeeDescStr, getLeaseStyleDesc, getPayStayleEnum, gotoIndex } from '/util/wuzhuUtil';
 import * as Utils from '/util/util';
 
 const app = getApp();
@@ -22,6 +22,7 @@ Page({
       errorIcon: '/image/orderSubmit/tobeConfirmed.svg', // 图标
       success: false, // 用于指示是否成功
       feeDetail: {
+        deepFreeAmount: '', // 身份认证减免金
         dayAvgRentAmt: '', // 每日租金
         totalDays: '', // 租期
         payStyleStr: '', // 结算方式
@@ -40,9 +41,7 @@ Page({
       aliPayShow: true, // 支付宝资金授权的展示
       depositAmtShow: true, // 总押金
       orderCreditAmtShow: true, // 芝麻信用授权金额展示
-      saveCouponInfoUrl: '/wuzhu/aliPayZmOrderController/saveBindCouponOrder', // 保存优惠券url
-      receiveNo: '', // 优惠券编号
-      couponFlag: 2, // 优惠券保存次数
+      deepFreeAmountShow: false, // 身份认证减免金
       coupon: null, // 优惠券
       currentMoney: 0, // 优惠后金额
       queryOrderResultUrl: '/wuzhu/order/queryAndConfirmOrderSatus', // 查询订单结果
@@ -60,15 +59,12 @@ Page({
       zmOrderNo: query.zmOrderNo,
       outOrderNo: query.outOrderNo,
       errorCode: query.errorCode,
-      orderType: query.orderType ? query.orderType : 0,
-      receiveNo: query.receiveNo
+      orderType: query.orderType ? query.orderType : 0
+      // receiveNo: query.receiveNo
     });
     console.info('传过来的 query === ' + JSON.stringify(query));
   },
   onShow() {
-    my.setNavigationBar({
-      title: '下单结果'
-    });
   },
   onReady() {
     // 获取对应的token并且复制给data里面的token
@@ -77,6 +73,9 @@ Page({
       token: token
     });
   },
+  onUnload() {
+    gotoIndex();
+  },   
   // 分享
   onShareAppMessage() {
     return app.shareObj.common;
@@ -99,16 +98,13 @@ Page({
         });
         // 下单成功查询详情
         this.httpGetOrderDetail();
-        if (this.data.receiveNo !== 'N') {
-          this.saveCouponInfo();
-        }
       } else if (res.code === '2025') {
         my.hideLoading();
         this.setData({
           success: false,
           errorTitle: '订单预约失败',
           errorIcon: '/image/orderSubmit/fail_3x.png',
-          errorReason: '您的订单暂未通过物主的深度审核，已被取消，期待下次光临！'
+          errorReason: '你的订单暂未通过物主的深度审核，已被取消，期待下次光临！'
         });
       } else {
         this.continueQueryOrder();
@@ -121,7 +117,7 @@ Page({
       this.setData({
         success: false,
         errorTitle: '正在确认订单，请稍候',
-        errorReason: '您的订单正在等待后台确认， 10分钟内将返回确认结果，请留意确认短信。'
+        errorReason: '你的订单正在等待后台确认， 10分钟内将返回确认结果，请留意确认短信。'
       });
     } else {
       this.queryOrderResult();
@@ -231,29 +227,6 @@ Page({
         my.hideLoading();
       });
   },
-  // 订单成功保存优惠券信息,不需要提示用户
-  saveCouponInfo() {
-    if (this.data.couponFlag <= 0) {
-      return false;
-    }
-    this.setData({
-      couponFlag: this.data.couponFlag--
-    });
-    let params = {
-      orderNo: this.data.outOrderNo,
-      receiveNo: this.data.receiveNo
-    };
-    http
-      .post(this.data.saveCouponInfoUrl, params)
-      .then(res => {
-        console.log('couponSave', res);
-      })
-      .catch(err => {
-        console.error(err);
-        this.saveCouponInfo();
-      });
-  },
-  // 解析获取到的订单详情内容
   // 解析获取到的订单详情内容
   parseHttpResult: function(data) {
     // 支付方式文字描述
@@ -290,8 +263,13 @@ Page({
     } else {
       firPayAmt = termFirstPayAmt;
     }
-
+    let deepFreeAmount = billInfo && billInfo['deepFreeAmount'];;
+    let deepFreeAmountShow = false;
+    if ( deepFreeAmount > 0 ) {
+      deepFreeAmountShow = true;
+    }
     let feeDetail = {
+      deepFreeAmount: deepFreeAmount,
       dayAvgRentAmt: dayAvgRentAmt, // 每日租金
       totalDays: totalDays, // 租期
       payStyleStr: payStyleStr, // 结算方式
@@ -305,6 +283,7 @@ Page({
     console.log('====== 解析出来 feeDetail ' + JSON.stringify(feeDetail));
 
     this.setData({
+      deepFreeAmountShow: deepFreeAmountShow,
       feeDetail: feeDetail
     });
   },
@@ -396,9 +375,10 @@ Page({
     // my.navigateBack({
     //   delta: 10
     // });
-    my.navigateTo({
-      url: '/pages/index/index'
-    });
+    // my.navigateTo({
+    //   url: '/pages/index/index'
+    // });
+    gotoIndex();
   },
   // 重试
   onRetryBtnClick() {

@@ -315,3 +315,11 @@
   position: fixed;
   height: 100%;
 }
+
+.supply-info-text {
+  /* height:56rpx;
+  line-height:56rpx; */
+  font-size:28rpx;
+  color:#1890FF;
+  border-bottom: 1rpx solid #1890FF;
+}

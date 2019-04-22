@@ -1,0 +1,91 @@
+.order-result-page{
+  width: 100%;
+  height: 100%;
+  background: #F7F7F7;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+  SimSun, sans-serif;
+}
+/*状态图标面板*/
+.or-icon-plane{
+  background: white;
+  padding: 60rpx 30rpx 40rpx;
+  /* margin-bottom: 20rpx; */
+}
+
+.icon-imagebox{
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.icon-image{
+  width: 130rpx;
+  height: 130rpx;
+}
+
+.icon-label{
+  color: #000000;
+  font-size: 34rpx;
+  line-height: 34rpx;
+  text-align: center;
+  margin-bottom: 20rpx;
+}
+
+.icon-label-gray{
+  color: #999999;
+  text-align: center;
+  font-size: 30rpx;
+  line-height: 30rpx;
+  margin-bottom: 20rpx;
+}
+.icon-zima-branch{
+  text-align: center;
+}
+.zimalogo{
+  width: 194rpx;
+  height: 30rpx;
+}
+
+
+/*按钮面板*/
+.or-menu-plane{
+  margin: 60rpx 30rpx 0;
+}
+
+.retry-btn{
+  background:#FADB14;
+  border-radius:4rpx;
+  font-size: 32rpx;
+  border: none;
+  height: 100rpx;
+  line-height: 100rpx;
+}
+
+.go-home-box{
+  margin-top: 30rpx;
+}
+
+.go-home-btn{
+  background:#FFFFFF;
+  border-radius:4rpx;
+  font-size: 32rpx;
+  border: none;
+  height: 100rpx;
+  line-height: 100rpx;
+  /* width: 330rpx */
+}
+
+
+/*租赁版权信息*/
+.or-copyright-plane{
+  text-align: center;
+  /* margin-bottom: 99rpx; */
+  left: 125rpx;
+  bottom: 100rpx;
+  position: fixed;
+}
+
+.copyright-icon{
+  width: 499rpx;
+  height: 85rpx;
+}

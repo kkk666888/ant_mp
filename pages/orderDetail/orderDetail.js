@@ -32,17 +32,14 @@ Page({
       buyOutDetail: {}, // 买断信息
       coupon: null, // 优惠券
       currentMoney: 0, // 优惠后的价格
-      currentPeriod: 0 // 当前期次
+      currentPeriod: 0, // 当前期次
+      protocolList: []
     };
   },
   onLoad(query) {
     let url = '/wuzhu/order/getOrderDetail';
     let params = {
       orderNo: query.orderNo
-      // orderNo: '00220190228164247M035265821' // 可买断
-      // orderNo: '00220190125172952M046660915'  // 主动买断完成的
-      // orderNo: '00220190129165528M046643040' // 买断中的
-      // orderNo: '00220190125175637M046669504'  // 逾期买断完结的
     };
     let that = this;
     my.showLoading();
@@ -103,8 +100,12 @@ Page({
           currentPeriodAmt: res.billInfo.currentPeriodAmt, // 本期应付
           orderDepositAmt: res.billInfo.orderDepositAmt, // 总押金
           payDepositAmt: res.billInfo.payDepositAmt, // 已冻结押金
-          orderCreditAmt: res.billInfo.orderCreditAmt // 芝麻信用免押金
+          orderCreditAmt: res.billInfo.orderCreditAmt, // 芝麻信用免押金
+          deepFreeAmount: res.billInfo.deepFreeAmount // 身份认证减免金
         };
+
+        // 协议
+        let protocolList = res['pdfFileList'];
 
         // 订单状态的时间管理
         const timeControl = {
@@ -138,7 +139,8 @@ Page({
           status: res.status,
           shwoBuyoutDetail: shwoBuyoutDetail,
           buyOutDetail: buyOutDetail,
-          currentPeriod: res.currentPeriod
+          currentPeriod: res.currentPeriod,
+          protocolList: protocolList
         });
         that.setOrderStatus();
         // 设置优惠券信息
@@ -176,16 +178,29 @@ Page({
      *  orderClass  @param 'order_cancel', 'order_stay', 'order_mail', 'order_complete'
      * */
     var bizStatus = parseInt(this.data.bizStatus);
-    var orderStatusArr = ['已取消', '待发货', '待收货', '租用中', '已完结', '回收中', '已拒收', '买断中'];
+    var orderStatusArr = [
+      '已取消',
+      '待发货',
+      '待收货',
+      '租用中',
+      '已完结',
+      '回收中',
+      '已拒收',
+      '买断中',
+      '待支付',
+      '待确认'
+    ];
     var orderStatusDesArr = [
       '订单已取消',
       '正在准备你的商品，请耐心等候',
       '你的商品已经发货，请注意查收',
       '请爱惜租用的商品，记得按期付款、归还，避免造成违约金',
       '订单已经完结',
-      '您的商品已送回物主基地，请耐心等待检测结果，如有疑问可随时咨询客服。',
+      '你的商品已送回物主基地，请耐心等待检测结果，如有疑问可随时咨询客服。',
       '拒收时，来回邮费由用户承担。邮费代扣成功后，订单将自动完结。',
-      '您的订单正在买断中'
+      '你的订单正在买断中',
+      '24h内将代扣首期费用，请确保账户余额充足，代扣结果将以短信形式告知。',
+      '你的订单正在等待后台确认， 10分钟内将返回确认结果，请留意确认短信。'
     ];
     var orderClassArr = [
       'order_cancel',
@@ -261,11 +276,27 @@ Page({
           showBtn: true
         });
         break;
+      case 2:
+        this.setData({
+          orderStatusStr: orderStatusArr[8],
+          orderStatusDes: orderStatusDesArr[8],
+          orderClass: orderClassArr[1],
+          showBtn: true
+        });
+        break;
+      case 1:
+        this.setData({
+          orderStatusStr: orderStatusArr[9],
+          orderStatusDes: orderStatusDesArr[9],
+          orderClass: orderClassArr[1],
+          showBtn: true
+        });
+        break;
     }
     // 买断完结
     if (this.data.status === '99005' && this.data.bizStatus === '99') {
       this.setData({
-        orderStatusDes: '您的订单已成功买断。'
+        orderStatusDes: '你的订单已成功买断。'
       });
     }
     // 强制买断完结
@@ -435,5 +466,24 @@ Page({
       }
     }
     return buttonListStr;
+  },
+  // 协议被点击
+  protocolClick: function(event) {
+    let item = event.target.dataset.item;
+    console.log('protocolClick = ' + JSON.stringify(item));
+    if (item) {
+      let protocolName = item.templateName;
+      let protocolUrl = encodeURIComponent(item.url);
+      my.navigateTo({
+        url: './../ProtocolHtml/ProtocolHtml?protocol=' + protocolName + '&protocolUrl=' + protocolUrl
+      });
+    }
+    // console.log('protocolName = ' + protocolName);
+    // let protocolUrl = '';
+    // if (protocolName === '物主用户租赁及服务协议') {
+    //   protocolUrl = Config._hoststr + '/doc/zfb/user_lease_agreement.htm';
+    // } else if (protocolName === '物主用户租赁协议及服务协议之补充协议') {
+    //   protocolUrl = Config._hoststr + '/doc/zfb/user_lease_supplementary_agreement.htm';
+    // }
   }
 });

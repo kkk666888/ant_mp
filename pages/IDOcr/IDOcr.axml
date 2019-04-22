@@ -1,0 +1,23 @@
+<view class="ocr">
+  <view class="content">
+    <view class="desc">
+      你可以通过认证身份，进一步提升信用额度
+    </view>
+    <view class="tips">
+      <text>
+        认证操作提示：\n1.请拍摄你的中国居民第二代身份证原件\n2.拍摄时，保持证件尽可能充满整个相机可见页面\n3.请确保拍摄证件的清晰可见\n4.我们将对证件照进行认证识别
+      </text>
+    </view>
+    <view class="img-block">
+      <image class="id-img" src="{{imgFront.path}}" data-side='front' mode="widthFix" onTap="chooseImage"/>
+      <view class="img-tips">身份证人像面
+      </view>
+      <image class="id-img" src="{{imgBack.path}}" data-side='back' mode="widthFix" onTap="chooseImage"/>
+      <view class="img-tips">身份证国徽面
+      </view>
+    </view>
+  </view>
+  <view class="btn-block">
+    <button class="btn-submit" onTap="sub">提交认证</button>
+  </view>
+</view>

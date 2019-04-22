@@ -26,8 +26,6 @@ Page({
   onLoad(query) {
     let that = this;
 
-    // query.orderNo = '00220190128105740M046672975';
-
     that.setData({
       orderNo: query.orderNo,
       buyoutType: query.buyoutType

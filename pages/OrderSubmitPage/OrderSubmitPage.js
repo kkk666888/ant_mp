@@ -11,6 +11,8 @@ orderDepositStatus.all = 2; // 全免
 Page({
   data() {
     return {
+      queryContractStatus: 'INIT',  // 查询合同的请求状态
+      showSupplyInfo: false, // 是否显示补充资料的入口
       orderType: 0,
       remindProtocol: false, // 提示用户点击阅读协议
       submitOrderStatus: false, // 用于检验是否下单是否成功
@@ -27,6 +29,7 @@ Page({
         listImg: ''
       },
       feeDetail: {
+        deepFreeAmount: '', // 身份认证减免金
         dayAvgRentAmt: '', // 每日租金
         totalDays: 0, // 租期
         payStyleStr: '', // 结算方式
@@ -45,9 +48,11 @@ Page({
       aliPayShow: true, // 支付宝资金授权的展示
       depositAmtShow: true, // 总押金
       orderCreditAmtShow: true, // 芝麻信用授权金额展示
+      deepFreeAmountShow: false,  // 身份认证减免金
       checkBoxImageUrl: '/image/common/choice_unchecked.png', // checkBox
       checkBoxChoose: false, // checkBox是否选定
-      protocolList: ['物主用户租赁及服务协议', '物主用户租赁协议及服务协议之补充协议'],
+      // protocolList: ['物主用户租赁及服务协议', '物主用户租赁协议及服务协议之补充协议'],
+      protocolList: [],
       showToast: false, // 展示费用说明
       toastTitle: '意外保障金说明', //  展示标题
       toastContent:
@@ -58,7 +63,8 @@ Page({
       disabledCards: [], // 不可使用的优惠券
       defaultCoupon: null, // 默认选中的优惠券
       currentMoney: 0, // 优惠后金额
-      isScroll: false
+      isScroll: false,
+      saveCouponInfoUrl: '/wuzhu/aliPayZmOrderController/saveBindCouponOrder' // 保存优惠券url
     };
   },
   onLoad(query) {
@@ -72,9 +78,6 @@ Page({
     this.httpGetOrderDetail();
   },
   onShow() {
-    my.setNavigationBar({
-      title: '确认订单'
-    });
     // 获取对应的token并且复制给data里面的token
     // var app = getApp();
     let token = app.Token;
@@ -210,6 +213,9 @@ Page({
     let serviceFeeList = data && data['serviceFeeList']; // 附加服务列表，此处费用显示逻辑和商品详情部分一致
     let serviceFeeInfoList = this.getServiceFeeList(serviceFeeList);
 
+    // 协议
+    let protocolList = data && data['pdfFileList'];
+
     let goodsDetail = {
       fullName: fullName,
       specContentList: specContentList,
@@ -226,7 +232,32 @@ Page({
       firPayAmt = termFirstPayAmt;
     }
 
+
+    // 判断是否显示深度免押入口
+    let showSupplyInfo = (data.deepExemption === 'Y') ? true : false;
+    if (showSupplyInfo) {
+      my.confirm({
+        title: '',
+        content: '仅需一步认证，即刻减免更多押金',
+        confirmButtonText: '立即减免',
+        cancelButtonText: '稍后了解',
+        success: result => {
+          console.log(result);
+          if (result && result.confirm) {
+            this.gotoIDOcr();
+          } else {
+            // do nothing
+          }
+        }
+      });
+    }
+    let deepFreeAmount = billInfo && billInfo['deepFreeAmount'];;
+    let deepFreeAmountShow = false;
+    if ( deepFreeAmount > 0 ) {
+      deepFreeAmountShow = true;
+    }
     let feeDetail = {
+      deepFreeAmount: deepFreeAmount,
       dayAvgRentAmt: dayAvgRentAmt, // 每日租金
       totalDays: totalDays, // 租期
       payStyleStr: payStyleStr, // 结算方式
@@ -238,11 +269,14 @@ Page({
     };
 
     this.setData({
+      deepFreeAmountShow: deepFreeAmountShow,
       receiverName: receiverName,
       receiverTel: receiverTel,
       consigneeAddr: consigneeAddr,
       goodsDetail: goodsDetail,
-      feeDetail: feeDetail
+      feeDetail: feeDetail,
+      showSupplyInfo: showSupplyInfo,
+      protocolList: protocolList
     });
   },
 
@@ -266,7 +300,7 @@ Page({
     switch (orderDeposit) {
       case orderDepositStatus.no: {
         aliPayShow = true;
-        depositAmtShow = false;
+        depositAmtShow = true;
         orderCreditAmtShow = false;
         break;
       }
@@ -374,6 +408,28 @@ Page({
       }
     });
   },
+  // 绑定优惠券
+  saveCouponInfo() {
+    // if (this.data.couponFlag <= 0) {
+    //   return false;
+    // }
+    // this.setData({
+    //   couponFlag: this.data.couponFlag--
+    // });
+    let params = {
+      orderNo: this.data.outOrderNo,
+      receiveNo: this.data.defaultCoupon.customerCouponInfoVO.receiveNo
+    };
+    http
+      .post(this.data.saveCouponInfoUrl, params)
+      .then(res => {
+        console.log('couponSave', res);
+      })
+      .catch(err => {
+        console.error(err);
+        // this.saveCouponInfo();
+      });
+  },
   // 上传zmRentTransition日志
   uploadZmRentTransitionLog(req, res, status) {
     let params = {
@@ -398,13 +454,13 @@ Page({
     let outOrderNo = this.data.outOrderNo;
     let orderType = this.data.orderType;
     let receiveNo = 'N';
-    if (this.data.defaultCoupon) {
-      receiveNo = this.data.defaultCoupon.customerCouponInfoVO.receiveNo;
-    }
+    // if (this.data.defaultCoupon) {
+    //   receiveNo = this.data.defaultCoupon.customerCouponInfoVO.receiveNo;
+    // }
     if (result === true) {
       // 成功后关闭本页面跳转订单下单结果页
       my.redirectTo({
-        url: `./../OrderResultPage/OrderResultPage?zmOrderNo=${zmOrderNo}&outOrderNo=${outOrderNo}&result=success&orderType=${orderType}&receiveNo=${receiveNo}`
+        url: `./../OrderResultPage/OrderResultPage?zmOrderNo=${zmOrderNo}&outOrderNo=${outOrderNo}&result=success&orderType=${orderType}`
       });
     } else {
       // 跳转订单下单结果页
@@ -446,23 +502,41 @@ Page({
           }
         });
       } else {
+        if (this.data.defaultCoupon) {
+          this.saveCouponInfo();
+        }
+
         this.mySureOrder();
       }
     }
   },
   // 协议被点击
   protocolClick: function(event) {
-    let protocolName = event.target.dataset.ItemName;
-    console.log('protocolName = ' + protocolName);
-    let protocolUrl = '';
-    if (protocolName === '物主用户租赁及服务协议') {
-      protocolUrl = Config._hoststr + '/doc/zfb/user_lease_agreement.htm';
-    } else if (protocolName === '物主用户租赁协议及服务协议之补充协议') {
-      protocolUrl = Config._hoststr + '/doc/zfb/user_lease_supplementary_agreement.htm';
+    let item = event.target.dataset.item;
+    console.log('protocolClick = ' + JSON.stringify(item));
+    if (item) {
+      // 如果未生成合同，则查询
+      if (item.contractCreatedStatus === 'N') {
+        my.showToast({
+          content: '请稍候...',
+          duration: 1000,
+        });
+        this.queryContract();
+        return;
+      }
+      let protocolName = item.templateName;
+      let protocolUrl = encodeURIComponent(item.url);
+      my.navigateTo({
+        url: './../ProtocolHtml/ProtocolHtml?protocol=' + protocolName + '&protocolUrl=' + protocolUrl
+      });
     }
-    my.navigateTo({
-      url: './../ProtocolHtml/ProtocolHtml?protocol=' + protocolName + '&protocolUrl=' + protocolUrl
-    });
+    // console.log('protocolName = ' + protocolName);
+    // let protocolUrl = '';
+    // if (protocolName === '物主用户租赁及服务协议') {
+    //   protocolUrl = Config._hoststr + '/doc/zfb/user_lease_agreement.htm';
+    // } else if (protocolName === '物主用户租赁协议及服务协议之补充协议') {
+    //   protocolUrl = Config._hoststr + '/doc/zfb/user_lease_supplementary_agreement.htm';
+    // }
   },
   // 费用部分icon被点击
   feeIconClick: function(event) {
@@ -572,5 +646,94 @@ Page({
         showBottom: false
       });
     }, 200);
+  },
+  gotoIDOcr() {
+    my.navigateTo({
+      url: '/pages/IDOcr/IDOcr?orderNo=' + this.data.outOrderNo
+    });
+  },
+  // 查询填充个人信息后的合同
+  queryContract(templateCode = '') {
+  // "templateName": "用户租赁及服务协议",
+  // "templateCode": "RENT_CONTRACT",
+  // "url": ""
+  // "contractCreatedStatus": "Y" // Y表示已创建合同，N表示模板
+    console.log('queryContract queryContractStatus = ' + this.data.queryContractStatus);
+    let needQuery = true;
+    switch (this.data.queryContractStatus) {
+      case 'INIT':
+        this.setData({
+          queryContractStatus: 'ING'
+        })
+        break;
+      case 'ING':
+        needQuery = false;
+        break;
+      case 'FAIL':
+        this.setData({
+          queryContractStatus: 'ING'
+        })
+        break;
+      case 'SUCCESS':
+        needQuery = false;
+        break;
+      default:
+        break;
+    }
+    console.log('queryContract needQuery = ' + needQuery);
+    if (!needQuery) {
+      return;
+    }
+    let params = {
+      orderNo: this.data.outOrderNo,
+      templateCode: templateCode
+    };
+    // my.showLoading();
+    http
+      .get('/wuzhu/order/queryContract', params)
+      .then(res => {
+        // my.hideLoading();
+        console.log('queryContract res = ' + JSON.stringify(res));
+        if (res.code === '00') {
+          let protocolList = res.data;
+          if (protocolList && protocolList.length > 0){
+            let succ = true;
+            for (let i = 0; i < protocolList.length; i++){
+              if (protocolList[i].contractCreatedStatus !== 'Y') {
+                succ = false;
+                break;
+              }
+            }
+            if (succ) {
+              this.setData({
+                queryContractStatus: 'SUCCESS',
+                protocolList: protocolList
+              });
+            } else {
+              this.setData({
+                queryContractStatus: 'FAIL',
+              });
+            }
+          } else {
+            this.setData({
+              queryContractStatus: 'FAIL',
+            });
+          }
+        } else {
+          // my.showToast({
+          //   content: res.msg
+          // });
+          this.setData({
+            queryContractStatus: 'FAIL',
+          });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        this.setData({
+          queryContractStatus: 'FAIL',
+        });
+        // my.hideLoading();
+      });
   }
 });

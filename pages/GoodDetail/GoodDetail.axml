@@ -196,7 +196,7 @@
             </text>
           </view>
           <view>
-            <text class="price-title">买断金：
+            <text class="price-title">买断尾款：
             </text>
             <text class="price-symbol">¥
             </text>
@@ -218,7 +218,7 @@
           </view>
         </view>
         <!-- 租赁方式 -->
-        <view class="choose-item">
+        <view class="choose-item" a:if="{{rentStyleArray.length != 1 || rentStyleArray[0].rentSolution != '1'}}">
           <view class="item-type">租赁方式
           </view>
           <view class="item-kind">
@@ -236,7 +236,7 @@
           </view>
         </view>
         <!-- 支付方式 -->
-        <view class="choose-item">
+        <view class="choose-item visible-no">
           <view class="item-type">支付方式
           </view>
           <view class="item-kind">

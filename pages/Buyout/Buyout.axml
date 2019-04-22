@@ -23,12 +23,20 @@
           </view>
           <view class="item gray mt30">
             <view class="item-left">已支付租金</view>
-            <view class="item-right">￥{{commodityInfo.payRentAmt}}</view>
+            <view class="item-right">￥{{commodityInfo.paidRentAmt}}</view>
           </view>
           <view class="item black mt30">
             <view class="item-left ">需支付买断金</view>
-            <view class="item-right ">￥{{commodityInfo.actualBuyOutAmt}}</view>
+            <view class="item-right ">￥{{commodityInfo.buyoutAmt}}</view>
           </view>
+          <view v-if="{{commodityInfo.buyoutFeeInfoList && commodityInfo.buyoutFeeInfoList.length > 0}}">
+            <view a:for="commodityInfo.buyoutFeeInfoList">
+              <div class="item black mt30">
+                <span class="item-left">{{item.feeName}}</span>
+                <span class="item-right">￥{{item.feeAmt}}</span>
+              </div>
+            </div>
+          </view>          
           <view class="item black mt30" a:if="{{commodityInfo.cashOffsetAmt}}">
             <view class="item-left">物主卡抵扣</view>
             <view class="item-right">-￥{{commodityInfo.cashOffsetAmt}}</view>
@@ -70,7 +78,7 @@
       <view class="buyout-section bg-white">
         <view class="item black">
           <view class="item-left ">实际应付</view>
-          <view class="item-right ">￥{{commodityInfo.finalActualPayAmt.toFixed(2)}}</view>
+          <view class="item-right ">￥{{commodityInfo.finalActualPayAmt}}</view>
         </view>
       </view>
     </view>

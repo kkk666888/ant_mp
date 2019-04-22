@@ -29,6 +29,18 @@ App({
   systemInfo: '',
   onLaunch(options) {
     console.log('app onLaunch options:' + JSON.stringify(options));
+    if (my.request) {
+      console.log('my.request ok.');
+    } else {
+        // 如果希望用户在最新版本的客户端上体验您的小程序，可以这样提示
+      my.alert({
+        title: '温馨提示',
+        content: '当前支付宝版本过低，部分功能将无法使用，请升级最新版本支付宝',
+        success: () => {
+        },
+      });
+    }
+
     // 小程序初始化
     this.setInvitationCode(options);
     this.setCategoryCode(options);
@@ -98,6 +110,10 @@ App({
       scopes: ['auth_user'], // 主动授权-弹框:auth_user，静默授权(不弹框):auth_base
       success: res => {
         console.log('getAuthCode res = ' + JSON.stringify(res));
+        console.log('userInfo.authCode = ' + that.userInfo.authCode);
+        if (that.userInfo.authCode === res.authCode) {
+          console.warn('userInfo.authCode = res.authCode');
+        }
         that.userInfo.authCode = res.authCode;
         my.getAuthUserInfo({
           success: res => {

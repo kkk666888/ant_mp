@@ -171,6 +171,12 @@
         <view class="flexRight">-¥{{feeDetail.orderCreditAmt.toFixed(2)}}
         </view>
       </view>
+      <view class="flexBox" a:if="{{feeDetail.deepFreeAmount}}">
+        <view class="flexLeft">身份认证减免金
+        </view>
+        <view class="flexRight">-¥{{feeDetail.deepFreeAmount.toFixed(2)}}
+        </view>
+      </view>      
       <view class="flexBox" a:if="{{feeDetail.payDepositAmt}}">
         <view class="flexLeft">已冻结押金
         </view>
@@ -276,7 +282,7 @@
     </view>
   </view>
   <!-- 订单状态时间管理 -->
-  <view class="time-control" a:if="{{timeControl}}" style="padding-bottom: {{showBtn ? '70px' : '20px'}}">
+  <view class="time-control" a:if="{{timeControl}}" >
     <!--已取消、待发-->
     <view class="flexBox">
       <view class="flexLeft f-gray">订单编号
@@ -309,6 +315,16 @@
       <view class="flexLeft f-gray">完结时间
       </view>
       <view class="flexRight f-gray">{{timeControl.finishDate}}
+      </view>
+    </view>
+  </view>
+  <!-- 协议 -->
+  <view class="feePlane protocol" style="padding-bottom: {{showBtn ? '70px' : '20px'}}">
+    <view class="flexBox">
+      <view class="flexLeft">相关协议
+      </view>
+      <view class="flexRight">
+        <text class="protocolText" a:for="{{protocolList}}" data-item="{{item}}" a:for-item="item" onTap="protocolClick">《{{item.templateName}}》</text>
       </view>
     </view>
   </view>

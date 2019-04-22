@@ -1,9 +1,10 @@
 import http from '/util/http';
 import Config from '/util/config';
 import { Intersect, addSeparator, formatDateInCN } from '/util/util';
-import { goToMiniProgram, uploadThirdInterfaceLog } from '/util/wuzhuUtil';
+import { goToMiniProgram, uploadThirdInterfaceLog, gotoIndex } from '/util/wuzhuUtil';
 import { CategoryStatus, parseRentDayList } from '/util/goodsDetailHelp';
 import questions from '/pages/GoodDetail/Q&A';
+import { startZMCreditRent } from '/util/startZMCreditRent';
 const app = getApp();
 
 Page({
@@ -108,11 +109,12 @@ Page({
       toastContent: '',
       buyoutPriceMin: '0', // 买断金最低价，在详情展示
       buyoutPriceCurr: '0.00', // 当前选定商品的买断金，在选择完商品规格后展示
-      marketPriceCurr: '0.00' // 当前选定商品的市场价，在选择完商品规格后展示
+      marketPriceCurr: '0.00', // 当前选定商品的市场价，在选择完商品规格后展示
+      userChooseFinancialProduct: {}
     };
   },
   onLoad(query) {
-    console.log('gooddetail onLoad query:' + JSON.stringify(query));
+    // console.log('gooddetail onLoad query:' + JSON.stringify(query));
     let categoryCode = '';
     if (query && query.categoryCode) {
       categoryCode = query.categoryCode;
@@ -121,7 +123,7 @@ Page({
         key: 'outCategoryCode'
       });
       categoryCode = outCategoryCode.data;
-      console.log('outCategoryCode = ' + categoryCode);
+      // console.log('outCategoryCode = ' + categoryCode);
     }
     this.setData({
       // 设置商品信息 -- categoryCode
@@ -137,15 +139,13 @@ Page({
 
     this.switchTabByIdx(0);
     this.queryCommodityBaseInfo();
-    // 暂时屏蔽活动 2019-2-28
-    // this.querPromotionInfo();
+    this.querPromotionInfo();
     this.queryCoupons();
   },
   onReady() {},
   onHide() {},
   onUnload() {},
   onShareAppMessage() {
-    console.log('shareObj = ' + JSON.stringify(app.shareObj));
     let tmpShare = app.shareObj.commodityDetail;
     (tmpShare.title = tmpShare.title || '物主潮品租赁'),
       (tmpShare.desc = tmpShare.desc || this.data.leaseDescShorName),
@@ -299,7 +299,7 @@ Page({
     let _resDatas = this.data.resDatas;
     let res = [];
     if (!(_resDatas && _resDatas.listCommodityCategorySpec)) {
-      console.error('>>> 商品规格 listCommodityCategorySpec 数据出错');
+      // console.error('>>> 商品规格 listCommodityCategorySpec 数据出错');
       return res;
     }
     // 根据 推荐系数 recommendNo 对 listCommodityCategorySpec 进行排序 -- 冒泡排序
@@ -341,12 +341,14 @@ Page({
   _listCommoditySpec() {
     let _resDatas = this.data.resDatas;
     let _res = this._listCommodityCategorySpec(); // 取得 商品 规格
+
     // 构造出 showCat
     let _showCat = [];
     for (let i = 0; i < _res.length; i++) {
       _showCat.push({
         isClick: false, // 判断用户是否点击过
         title: _res[i].datas[0].specName,
+        typeAttrNo: _res[i].typeAttrNo, // 新增规格类型No
         selectNum: -1,
         compare: [], // 用于对比 categorySpecCode
         btn: []
@@ -369,7 +371,7 @@ Page({
     let _headInfoDescribe = this.data.headInfo.describe;
     if (!(_resDatas && _resDatas.listCommodity && _res.length > 0)) {
       _headInfoDescribe = '无货';
-      console.error('>>> listCommodity 数据出错');
+      // console.error('>>> listCommodity 数据出错');
     } else {
       let _listCommodity = _resDatas.listCommodity;
       this._marketPrice(_listCommodity); // 处理 市场价
@@ -415,6 +417,9 @@ Page({
     let maxPrice = addSeparator(com[com.length - 1].marketPrice);
     // 计算买断金，计算公式是：“该品类的最小的市场价*买断系数 - 该品类的最小每日租金*最大租期”
     let _buyoutPriceMin = ((minPrice * this.data.buyoutRatio) / 100 - this.data.leaseDescRentTotal).toFixed(0);
+    if (isNaN(_buyoutPriceMin) || _buyoutPriceMin < 0) {
+      _buyoutPriceMin = 0;
+    }
     this.setData({
       'marketPrice.min': minPrice,
       'marketPrice.max': maxPrice,
@@ -640,7 +645,7 @@ Page({
     if (JSON.stringify(userChooseRentItem) === '{}') {
       my.showToast({
         type: 'none',
-        content: '请选择您的租赁方式',
+        content: '请选择你的租赁方式',
         duration: 3000
       });
       return false;
@@ -648,7 +653,7 @@ Page({
     if (JSON.stringify(userChooseFinancialProduct) === '{}') {
       my.showToast({
         type: 'none',
-        content: '请选择您的租赁天数',
+        content: '请选择你的租赁天数',
         duration: 3000
       });
       return false;
@@ -657,7 +662,7 @@ Page({
     if (JSON.stringify(payChooseItem) === '{}') {
       my.showToast({
         type: 'none',
-        content: '请选择您的支付方式',
+        content: '请选择你的支付方式',
         duration: 3000
       });
       return false;
@@ -667,7 +672,7 @@ Page({
   // 确认下单
   confirmOrder() {
     let that = this;
-    console.log('>>> 确认下单');
+    // console.log('>>> 确认下单');
     let _res = that.verifyOrder(); // 检验 showCat
     if (_res === false) {
       return;
@@ -688,12 +693,12 @@ Page({
     // console.info(app.isLogonRequest);
     app.startLogin(
       function(res) {
-        console.log('startLogin success, ' + JSON.stringify(res));
+        // console.log('startLogin success, ' + JSON.stringify(res));
         // 登录成功
         that.confrimPlaceOrderOnCreditEvaluation(chooseProduct, payWay);
       },
       function(err) {
-        console.log('startLogin fail, ' + JSON.stringify(err));
+        // console.log('startLogin fail, ' + JSON.stringify(err));
         that.setData({
           // 恢复 按钮 状态
           isClick: true
@@ -729,7 +734,7 @@ Page({
       totaldays: 0, // 选择的租赁天数，续租时需要该字段
       orderType: '0', // 是否续租订单标识：1：续租订单 0：正常下单
       orderNo: '',
-      payDepositAmtStyle: '002'  // 押金支付方式，小程序信用租是002
+      payDepositAmtStyle: '002' // 押金支付方式，小程序信用租是002
     };
     http
       .post('/wuzhu/aliPayZmOrderController/confrimPlaceOrderOnCreditEvaluation', params)
@@ -756,6 +761,12 @@ Page({
         my.hideLoading();
       });
   },
+  recoveryClick() {
+    this.setData({
+      // 恢复 按钮 状态
+      isClick: true
+    });
+  },
   // 免押评估接口
   ZMCreditRent(opt) {
     let that = this;
@@ -763,73 +774,80 @@ Page({
       my.alert({
         content: '商品配置错误：该商品类目为空!'
       });
-      that.setData({
-        // 恢复 按钮 状态
-        isClick: true
-      });
+      that.recoveryClick();
+      // that.setData({
+      //   // 恢复 按钮 状态
+      //   isClick: true
+      // });
       my.hideLoading();
       return;
     }
-    if (opt.totalPayAmt) {
-      opt.totalPayAmt = parseFloat(opt.totalPayAmt).toFixed(2);
-      opt.totalDepositAmt = parseFloat(opt.totalDepositAmt).toFixed(2);
-    }
-    my.startZMCreditRent({
-      creditRentType: 'rent', // 固定传：rent
-      category: opt.zmCategoryId, // 类目 -- 需提供，例如：'ZMSC_1_1_1'
-      subject: {
-        products: [
-          {
-            count: opt.commodityAccount, // 商品件数
-            deposit: opt.totalDepositAmt, // 总押金
-            installmentCount: opt.totalTerm, // 分期数
-            name: encodeURI(opt.commdityShortName) // 商品名
-          }
-        ]
-      },
-      overdue_time: opt.overdueDate, // 逾期时间
-      amount: opt.totalPayAmt, // 租金总金额
-      deposit: opt.totalDepositAmt, // 押金总金额
-      out_order_no: opt.orderNo, // 商户自己的订单号
-      item_id: opt.itemId,
-      // 订单处理 url，商户处理订单的页面,后续发送给用户订单继续处理的支付宝Card消息中，需要跳转该链接。如果没有链接，无法发送 支付宝Card消息。
-      order_process_url:
-        'alipays://platformapi/startapp?appId=' + Config.appid + '&query=xx%3dxx&page=pages/orderList/orderList',
-      success: function(res) {
-        my.hideLoading();
-        if (res.orderNo) {
-          my.setStorageSync({
-            key: 'GoodDetailData',
-            data: {
-              ZMCreditRent: res
-            }
-          });
-          that.upateZimaOrderInfo(res.orderNo, res.outOrderNo); // 更新订单
-          that.uploadStartZMCreditRentLog(opt, res, '1');
-        } else {
-          that.uploadStartZMCreditRentLog(opt, res, '2');
-        }
-        that.setData({
-          // 恢复 按钮 状态
-          isClick: true
-        });
-      },
-      fail: function(res) {
-        that.setData({
-          // 恢复 按钮 状态
-          isClick: true
-        });
-        my.hideLoading();
-        that.uploadStartZMCreditRentLog(opt, res, '2');
-      },
-      complete: function(res) {
-        // my.hideLoading();
-        that.setData({
-          // 恢复 按钮 状态
-          isClick: true
-        });
-      }
+    startZMCreditRent(opt, function (res) {
+      that.setData({
+        // 恢复 按钮 状态
+        isClick: true
+      });      
     });
+    // if (opt.totalPayAmt) {
+    //   opt.totalPayAmt = parseFloat(opt.totalPayAmt).toFixed(2);
+    //   opt.totalDepositAmt = parseFloat(opt.totalDepositAmt).toFixed(2);
+    // }
+    // my.startZMCreditRent({
+    //   creditRentType: 'rent', // 固定传：rent
+    //   category: opt.zmCategoryId, // 类目 -- 需提供，例如：'ZMSC_1_1_1'
+    //   subject: {
+    //     products: [
+    //       {
+    //         count: opt.commodityAccount, // 商品件数
+    //         deposit: opt.totalDepositAmt, // 总押金
+    //         installmentCount: opt.totalTerm, // 分期数
+    //         name: encodeURI(opt.commdityShortName) // 商品名
+    //       }
+    //     ]
+    //   },
+    //   overdue_time: opt.overdueDate, // 逾期时间
+    //   amount: opt.totalPayAmt, // 租金总金额
+    //   deposit: opt.totalDepositAmt, // 押金总金额
+    //   out_order_no: opt.orderNo, // 商户自己的订单号
+    //   item_id: opt.itemId,
+    //   // 订单处理 url，商户处理订单的页面,后续发送给用户订单继续处理的支付宝Card消息中，需要跳转该链接。如果没有链接，无法发送 支付宝Card消息。
+    //   order_process_url:
+    //     'alipays://platformapi/startapp?appId=' + Config.appid + '&query=xx%3dxx&page=pages/orderList/orderList',
+    //   success: function(res) {
+    //     my.hideLoading();
+    //     if (res.orderNo) {
+    //       my.setStorageSync({
+    //         key: 'GoodDetailData',
+    //         data: {
+    //           ZMCreditRent: res
+    //         }
+    //       });
+    //       that.upateZimaOrderInfo(res.orderNo, res.outOrderNo); // 更新订单
+    //       that.uploadStartZMCreditRentLog(opt, res, '1');
+    //     } else {
+    //       that.uploadStartZMCreditRentLog(opt, res, '2');
+    //     }
+    //     that.setData({
+    //       // 恢复 按钮 状态
+    //       isClick: true
+    //     });
+    //   },
+    //   fail: function(res) {
+    //     that.setData({
+    //       // 恢复 按钮 状态
+    //       isClick: true
+    //     });
+    //     my.hideLoading();
+    //     that.uploadStartZMCreditRentLog(opt, res, '2');
+    //   },
+    //   complete: function(res) {
+    //     // my.hideLoading();
+    //     that.setData({
+    //       // 恢复 按钮 状态
+    //       isClick: true
+    //     });
+    //   }
+    // });
   },
   // 上传startZMCreditRent日志
   uploadStartZMCreditRentLog(opt, res, status) {
@@ -860,7 +878,7 @@ Page({
       status: status, // 状态：1成功2失败
       logSource: '0' // 请求发起来源 0:前端发起；1=后端发起
     };
-    console.log('params:' + params);
+    // console.log('params:' + params);
     uploadThirdInterfaceLog(params);
   },
   // 服务说明
@@ -887,7 +905,7 @@ Page({
   // 立即租赁 按钮
   LeaseNow() {
     // modified by hf 2019-1-9
-    console.log('LeaseNow getDetailStatus = ' + this.data.getDetailStatus);
+    // console.log('LeaseNow getDetailStatus = ' + this.data.getDetailStatus);
     // 判断获取商品详细信息的状态
     switch (this.data.getDetailStatus) {
       case 'INIT':
@@ -917,7 +935,7 @@ Page({
   },
   // 店铺
   shop() {
-    this.gotoIndex();
+    gotoIndex();
   },
   // 客服
   customerService() {
@@ -929,7 +947,7 @@ Page({
   // 更新 订单
   upateZimaOrderInfo(zmOrderNo, outOrderNo) {
     my.showLoading();
-    console.log('upateZimaOrderInfo');
+    // console.log('upateZimaOrderInfo');
     http
       .post('/wuzhu/aliPayZmOrderController/upateZimaOrderInfo', {
         zmOrderNo: zmOrderNo,
@@ -964,13 +982,7 @@ Page({
       })
       .then(res => {
         my.hideLoading();
-        console.log('queryAvaliCommodityStockQty res = ' + JSON.stringify(res));
-        console.log(
-          'queryAvaliCommodityStockQty commodityNo = ' +
-            _selectListCommodity.commodityNo +
-            ', isLimited = ' +
-            _selectListCommodity.isLimited
-        );
+        // console.log('queryAvaliCommodityStockQty res = ' + JSON.stringify(res));
         if (res.code === '00') {
           let storeNum = res.data;
           let _describe = that.data.headInfo.describe;
@@ -1057,7 +1069,7 @@ Page({
   },
   // 查询 商品详情
   queryCommodityDetail(showLoading) {
-    console.log('queryCommodityDetail getDetailStatus = ' + this.data.getDetailStatus);
+    // console.log('queryCommodityDetail getDetailStatus = ' + this.data.getDetailStatus);
     if (this.data.getDetailStatus === 'DOING' || this.data.getDetailStatus === 'SUCCESS') {
       return;
     }
@@ -1102,8 +1114,13 @@ Page({
             isDialogOpen: true,
             fsPopupClass: 'fs-popup fs-popup-show'
           });
+
           that._listCommoditySpec(); // 构造 按钮 数据
           that._constuctRentPlaneBtn(res.data); // 构造租赁方式和 已经 租期等按钮的数据
+
+          // 设置推荐产品数据
+          this.handelRecommendData(res.data, res.data.defaultProductNo, res.data.defaultCommodityNo);
+
           my.hideLoading(); // 不知道为何前一个 my.hideLoading 没有效果
         } else {
           that.setData({
@@ -1123,6 +1140,56 @@ Page({
         });
       });
   },
+  // 设置推荐产品
+  handelRecommendData(data, productNo, commodityNo) {
+    let commodity = data.listCommodity.find(item => {
+      return item.commodityNo === commodityNo;
+    });
+    let parseData = this.data.showCat;
+    let typeIndex = null; // 规格类型index
+    let specIndex = null; // 规格index
+
+    //  根据推荐商品的规格No搜索对应的规格
+    for (let i = 0; i < commodity.listCommoditySpec.length; i++) {
+      const element = commodity.listCommoditySpec[i];
+      // 搜索对应的规格类型
+      let specType = parseData.find(item => item.typeAttrNo === element.typeAttrNo);
+      typeIndex = parseData.findIndex(item => item.typeAttrNo === element.typeAttrNo);
+      // 搜索规格
+      specIndex = specType.btn.findIndex(specItem => {
+        return specItem.categorySpecCode === element.categorySpecCode;
+      });
+      // 根据索引设置选中规格
+      this.dealShowCat(typeIndex, specIndex);
+    }
+
+    // 搜索推荐产品
+    let product = commodity.listProduct.find(item => item.productNo === productNo);
+    let [financeProductList, rentStyleArray] = parseRentDayList(data);
+    // 搜索租赁方式
+    let rentStyle = rentStyleArray.find(item => item.rentSolution === product.rentSolution);
+    // 搜索租期
+    let rentDay = financeProductList.find(item => item.totalDays === product.totalDays);
+    let rentItem = {
+      target: {
+        dataset: {
+          rentItem: rentStyle
+        }
+      }
+    };
+    let dayItem = {
+      target: {
+        dataset: {
+          dayItem: rentDay
+        }
+      }
+    };
+    this.setData({
+      userChooseRentItem: rentStyle
+    });
+    this.rentItemClick(rentItem);
+    this.financialItemClick(dayItem);
+  },
   // 查询商品品类对应的活动
   querPromotionInfo() {
     let that = this;
@@ -1133,7 +1200,7 @@ Page({
         recommendCode: that.data.recommendCode
       })
       .then(res => {
-        console.info('querPromotionInfo res = ' + JSON.stringify(res));
+        // console.info('querPromotionInfo res = ' + JSON.stringify(res));
         if (res.code === '00') {
           if (res.data && res.data.length > 0) {
             // TODO 本次暂时取第一个 2019-1-8
@@ -1202,6 +1269,7 @@ Page({
     }
     return price;
   },
+  // 常见问答点击展开
   handleTitleTap(e, data) {
     let currentindex = this.data.collapseData.findIndex(item => item.title === data.title);
     const { index } = e.target.dataset;
@@ -1211,42 +1279,6 @@ Page({
     this.setData({
       [`collapseData[${currentindex}]`]: panel
     });
-
-    // if (index === currentindex) {
-    //   // 当前打开，进行关闭操作
-    //   panels[index].expanded = false;
-    //   currentindex = -1;
-    // } else {
-    //   if () {
-
-    //   }
-    // }
-    // let currentindex = this.data.currentindex;
-    // const { index } = e.target.dataset;
-    // const panels = this.data.collapseData.panels;
-    // if (index === currentindex) {
-    //   // 当前打开,进行关闭操作
-    //   panels[index].expanded = false;
-    //   currentindex = -1;
-    // } else {
-    //   if (currentindex !== -1) {
-    //     // 有处于打开的状态
-    //     // panels[currentindex].expanded = false;
-    //     panels[index].expanded = true;
-    //     currentindex = index;
-    //   } else {
-    //     // 目前都是关闭的情况
-    //     panels[index].expanded = true;
-    //     currentindex = index;
-    //   }
-    // }
-    // this.setData({
-    //   collapseData: {
-    //     ...this.data.collapseData,
-    //     panels: [...panels]
-    //   },
-    //   currentindex: currentindex
-    // });
   },
   /***********************CSL 新增加方法增加租赁方式部分代码 ******************************/
   // 入参: data https返回的原始报文的data数据部分
@@ -1255,7 +1287,7 @@ Page({
     let payStyleArray = [];
     let payStyleDict = data && data['rentPayStyles'];
     let tempJson = JSON.parse(payStyleDict);
-    console.info('tempJson == ' + JSON.stringify(tempJson));
+    // console.info('tempJson == ', financeProductList, rentStyleArray);
     for (let key in tempJson) {
       payStyleArray.push({
         key: key,
@@ -1273,8 +1305,6 @@ Page({
       payStyleArray: payStyleArray
     });
   },
-
-  // 点击事件的处理
   //  用户选择对应的租赁方式
   rentItemClick(e) {
     let rentItem = e.target.dataset.rentItem;
@@ -1296,6 +1326,7 @@ Page({
       userChooseRentItem = rentItem;
       // 开始筛选对应的金融产品列表
       userChooseRentProductList = [];
+
       let listProduct = userChooseGood && userChooseGood['listProduct'];
       if (listProduct !== undefined && listProduct instanceof Array) {
         for (let i = 0; i < listProduct.length; i++) {
@@ -1308,9 +1339,18 @@ Page({
         if (userChooseRentProductList.length === 1) {
           userChooseFinancialProduct = userChooseRentProductList[0];
           payChooseItem = this.dealWithPayItemWithFinancialProduct(userChooseFinancialProduct);
+        } else {
+          if (JSON.stringify(userChooseFinancialProduct) !== '{}') {
+            userChooseFinancialProduct = userChooseRentProductList.find(
+              item => item.totalDays === userChooseFinancialProduct.totalDays
+            );
+            payChooseItem = this.dealWithPayItemWithFinancialProduct(userChooseFinancialProduct);
+          }
         }
       }
+      // console.log('product', userChooseGood, userChooseRentProductList, userChooseFinancialProduct);
     }
+    console.log('rentclick', userChooseGood, userChooseRentProductList, userChooseFinancialProduct);
 
     this.setData({
       userChooseRentItem: userChooseRentItem,
@@ -1324,31 +1364,36 @@ Page({
     this.refreashRentDayBtnsCssStyle();
     this.refreashPayStyle();
     this.refreashFinaProductReleative();
-    this.getBuyoutPrice();
+    // this.getBuyoutPrice();
   },
   // 买断金计算公式是：“该商品的市场价*买断系数 - 商品的每日租金*选中的租期（如果没选中，默认是最大租期）”
   getBuyoutPrice() {
     let buyoutPrice = 0;
-    if (this.data.userChooseGood && this.data.userChooseFinancialProduct) {
-      buyoutPrice = (
-        this.data.userChooseGood.signPrice -
-        this.data.userChooseFinancialProduct.avgRentAmt * this.data.userChooseFinancialProduct.totalDays
-      ).toFixed(0);
-    }
-    if (buyoutPrice > 0) {
+    setTimeout(() => {
+      console.log('getBuyoutPrice userChooseGood = ' + JSON.stringify(this.data.userChooseGood.signPrice));
+      console.log(
+        'getBuyoutPrice userChooseFinancialProduct = ' + JSON.stringify(this.data.userChooseFinancialProduct.avgRentAmt)
+      );
+      if (this.data.userChooseGood && this.data.userChooseFinancialProduct) {
+        buyoutPrice = (
+          this.data.userChooseGood.signPrice -
+          this.data.userChooseFinancialProduct.avgRentAmt * this.data.userChooseFinancialProduct.totalDays
+        ).toFixed(0);
+      }
+      if (isNaN(buyoutPrice) || buyoutPrice <= 0) {
+        buyoutPrice = 0;
+      }
       this.setData({
         buyoutPriceCurr: buyoutPrice
       });
-    }
-    return buyoutPrice;
+    }, 0);
   },
 
   //  用户选择金融产品的处理
   financialItemClick(e) {
-    let financialItem = e.target.dataset.dayItem;
-    console.log('financialItem' + JSON.stringify(financialItem));
     let userChooseFinancialProduct = this.data.userChooseFinancialProduct;
     let payItem = this.data.payChooseItem;
+    let financialItem = e.target.dataset.dayItem;
     let stu = financialItem.Status;
     if (stu === CategoryStatus.Disable) {
       return;
@@ -1364,6 +1409,7 @@ Page({
         let findResult = listProduct.findIndex(function(element, index, array) {
           return element.totalDays === financialItem.totalDays;
         });
+
         if (findResult !== -1) {
           userChooseFinancialProduct = listProduct[findResult];
           // 根据选择的金融产品的数据
@@ -1371,16 +1417,19 @@ Page({
           console.warn('选定的payItem为:' + JSON.stringify(payItem));
         }
       }
+      console.log('financeClick', userChooseFinancialProduct, listProduct);
     }
+
     this.setData({
       userChooseFinancialProduct: userChooseFinancialProduct,
       payChooseItem: payItem
+      // financeProductList: userChooseRentProductList
     });
     this.refreashRentStyle();
     this.refreashRentDayBtnsCssStyle();
     this.refreashPayStyle();
     this.refreashFinaProductReleative();
-    this.getBuyoutPrice();
+    // this.getBuyoutPrice();
   },
 
   // 根据选中的金融产品列表 选定对应支付方式的逻辑
@@ -1388,25 +1437,15 @@ Page({
     let payStyleArray = this.data.payStyleArray;
     let payItem = {};
     let rentPayStyle = userChooseFinancialProduct && userChooseFinancialProduct['rentPayStyle'];
-    // 如果当前选择的租赁天数
-    let rentDay = userChooseFinancialProduct.totalDays;
-    if (rentDay > 31) {
-      // 开始查询是否包含按月支付
-      let findResult = payStyleArray.findIndex(function(element, index, array) {
-        return element.key === '0';
-      });
-      if (findResult !== -1) {
-        payItem = payStyleArray[findResult];
-      }
-    } else {
-      // 开始查询是否包含一次性支付
-      let findResult = payStyleArray.findIndex(function(element, index, array) {
-        return element.key === '1';
-      });
-      if (findResult !== -1) {
-        payItem = payStyleArray[findResult];
-      }
+
+    // 小程序只有按月支付
+    let findResult = payStyleArray.findIndex(function(element, index, array) {
+      return element.key === '0';
+    });
+    if (findResult !== -1) {
+      payItem = payStyleArray[findResult];
     }
+
     // 判断下是否在当前金融产品的是否支持该支付方式
     if (JSON.stringify(payItem) !== '{}') {
       let findResult = rentPayStyle.indexOf(payItem.key);
@@ -1414,6 +1453,7 @@ Page({
         return {};
       }
     }
+
     return payItem;
   },
 
@@ -1479,8 +1519,6 @@ Page({
   refreashRentStyle() {
     /* 开始变化对应按钮的状态 */
     let rentStyleArray = this.data.rentStyleArray;
-    // let financeProductList = this.data.financeProductList;
-    // let payStyleArray = this.data.payStyleArray;
     let listProduct = this.data.userChooseGood && this.data.userChooseGood['listProduct'];
     let userChooseRentItem = this.data.userChooseRentItem;
 
@@ -1520,9 +1558,12 @@ Page({
 
   /* 根据当前的数据更新租赁天数部分按钮状态的函数 */
   refreashRentDayBtnsCssStyle() {
+    // let listProduct = this.data.userChooseGood && this.data.userChooseGood['listProduct'];
     let listProduct = this.data.userChooseRentProductList;
     let financeProductList = this.data.financeProductList;
     let userChooseFinancialProduct = this.data.userChooseFinancialProduct;
+    // console.log('list', financeProductList);
+
     /*开始设置金融产品列表的 租赁天数部分的css状态*/
     if (listProduct !== undefined && listProduct instanceof Array) {
       for (let i = 0; i < financeProductList.length; i++) {
@@ -1551,6 +1592,8 @@ Page({
         finalProductItem.cssName = 'kind-btn btn-gray';
       }
     }
+    // console.log('22', financeProductList);
+
     this.setData({
       financeProductList: financeProductList
     });
@@ -1573,7 +1616,8 @@ Page({
       _headInfo.price = leastRentDay;
       _headInfo.oneMonthPrice = oneMonthPrice;
     }
-
+    console.log('head', _headInfo);
+    this.getBuyoutPrice();
     this.setData({
       headInfo: _headInfo
     });
@@ -1617,20 +1661,41 @@ Page({
     }
 
     // 先清空所有的相关数据
+    // console.log('financeProductList = ' + JSON.stringify(this.data.financeProductList));
+    // console.log('rentStyleArray = ' + JSON.stringify(this.data.rentStyleArray));
+    // console.log('payStyleArray = ' + JSON.stringify(this.data.payStyleArray));
+    // let initSomeData = {};
+    // if (this.data.financeProductList && this.data.financeProductList.length > 1) {
+    //   initSomeData.userChooseFinancialProduct = {};
+    // }
+    // if (this.data.rentStyleArray && this.data.rentStyleArray.length > 1) {
+    //   // initSomeData.userChooseRentItem = {};
+    // }
+    // if (this.data.payStyleArray && this.data.payStyleArray.length > 1) {
+    //   initSomeData.payChooseItem = {};
+    // }
+    // initSomeData.userChooseGood = {};
+    // this.setData(initSomeData);
     this.setData({
       userChooseGood: {},
-      userChooseFinancialProduct: {},
+      // userChooseFinancialProduct: {},
       userChooseRentProductList: [],
-      userChooseRentItem: {},
+      // userChooseRentItem: {}
       payChooseItem: {}
     });
+
     if (allChoose === true) {
       let userChooseGoodTemp = this.data.userChooseGoodTemp;
+
+      // 租完归还的租赁方式立即选中，更新productlist
+      // if (this.data.rentStyleArray.length == 1 && this.data.rentStyleArray[0].rentSolution == '1') {
+      // }
+      this.updateProductList(userChooseGoodTemp);
+
       this.setData({
         userChooseGood: userChooseGoodTemp,
         marketPriceCurr: userChooseGoodTemp.marketPrice
       });
-      console.log('updateWithShowCatChoose isLimited = ' + userChooseGoodTemp.isLimited);
       if (userChooseGoodTemp && userChooseGoodTemp.isLimited != 0) {
         // 限量商品开始检查库存
         if (userChooseGoodTemp.commodityNo) {
@@ -1661,10 +1726,64 @@ Page({
       this.refreashRentStyle();
       this.refreashRentDayBtnsCssStyle();
     }
+    console.log('update', this.data.userChooseGood);
+  },
+  // 手动更新productlist
+  updateProductList(userChooseGoodTemp) {
+    // 转化成当前费用列表中具体的费用
+    // userChooseRentItem = rentItem;
+    // 开始筛选对应的金融产品列表
+    let userChooseRentProductList = [];
+    let rentItem = this.data.userChooseRentItem;
+    let userChooseFinancialProduct = this.data.userChooseFinancialProduct;
+    let payChooseItem = {};
+    console.log('before', userChooseFinancialProduct);
+
+    let listProduct = userChooseGoodTemp && userChooseGoodTemp['listProduct'];
+    if (listProduct !== undefined && listProduct instanceof Array) {
+      for (let i = 0; i < listProduct.length; i++) {
+        let product = listProduct[i];
+        if (product.rentSolution === rentItem.rentSolution) {
+          userChooseRentProductList.push(product);
+        }
+      }
+      // 增加开始判断的逻辑，如果只有一个租期符合要求那么久默认选定
+      if (userChooseRentProductList.length == 0) {
+        this.setData({
+          userChooseRentItem: {}
+        });
+      } else if (userChooseRentProductList.length === 1) {
+        userChooseFinancialProduct = userChooseRentProductList[0];
+        payChooseItem = this.dealWithPayItemWithFinancialProduct(userChooseFinancialProduct);
+      } else {
+        if (JSON.stringify(userChooseFinancialProduct) !== '{}') {
+          userChooseFinancialProduct = userChooseRentProductList.find(item => {
+            return item.totalDays === userChooseFinancialProduct.totalDays;
+          });
+
+          payChooseItem = this.dealWithPayItemWithFinancialProduct(userChooseFinancialProduct);
+        }
+      }
+    }
+    console.log('up', userChooseFinancialProduct, userChooseRentProductList);
+
+    this.setData({
+      // userChooseRentItem: userChooseRentItem,
+      userChooseRentProductList: userChooseRentProductList,
+      userChooseFinancialProduct: userChooseFinancialProduct,
+      // userChooseGood: userChooseGood,
+      payChooseItem: payChooseItem,
+      marketPriceCurr: userChooseGoodTemp.marketPrice
+    });
+    this.refreashRentStyle();
+    this.refreashRentDayBtnsCssStyle();
+    this.refreashPayStyle();
+    this.refreashFinaProductReleative();
+    // this.getBuyoutPrice();
   },
   // 费用说明等弹框隐藏按钮被点击,注意一定要以on开头，否则会被处理为字符串
   onHideToastClick: function() {
-    console.log('hideToastClick hideToastClick hideToastClick====');
+    // console.log('hideToastClick hideToastClick hideToastClick====');
     this.setData({
       showToast: false
     });
@@ -1674,8 +1793,9 @@ Page({
     let feeItem = event.target.dataset.feeItem;
     this.setData({
       showToast: true,
-      toastTitle: '买断金',
-      toastContent: '买断金是指该款机器到期买断所需款项，如需提前买断以发起买断时页面展示支付金额为准。'
+      toastTitle: '买断尾款',
+      toastContent:
+        '买断尾款是指商品租赁到期后，客户选择买断商品需支付的款项，如需提前买断，以发起买断时页面展示的支付金额为准。'
     });
   },
   // 费用部分icon被点击
@@ -1691,7 +1811,7 @@ Page({
   // 引流文字被点击
   leadFlowClick: function(event) {
     let url = event.target.dataset.url;
-    console.log('leadFlowClick url = ' + url);
+    // console.log('leadFlowClick url = ' + url);
     if (url) {
       // 如果有url，则跳转到对应的活动页
       my.navigateTo({
@@ -1699,14 +1819,14 @@ Page({
       });
     } else {
       // 如果没有url，则跳转到首页
-      this.gotoIndex();
+      gotoIndex();
     }
   },
   // 活动被点击
   activityClick: function(event) {
     let that = this;
     let activity = event.target.dataset.activity;
-    console.log('leadFlowClick activity = ' + JSON.stringify(activity));
+    // console.log('leadFlowClick activity = ' + JSON.stringify(activity));
     if (activity) {
       this.checkPartByPromotion(activity);
     } else {
@@ -1715,19 +1835,19 @@ Page({
       });
     }
   },
-  gotoIndex: function() {
-    // 修改点击店铺返回首页的方式。从外部链接直接进入详情,用navigateBack方法会无法返回首页
-    let currentPages = getCurrentPages().length;
-    if (currentPages <= 1) {
-      my.reLaunch({
-        url: '/pages/index/index'
-      });
-    } else {
-      my.switchTab({
-        url: '/pages/index/index'
-      });
-    }
-  },
+  // gotoIndex: function() {
+  //   // 修改点击店铺返回首页的方式。从外部链接直接进入详情,用navigateBack方法会无法返回首页
+  //   let currentPages = getCurrentPages().length;
+  //   if (currentPages <= 1) {
+  //     my.reLaunch({
+  //       url: '/pages/index/index'
+  //     });
+  //   } else {
+  //     my.switchTab({
+  //       url: '/pages/index/index'
+  //     });
+  //   }
+  // },
   // 活动点击后处理
   activityDispatch: function(activity) {
     let that = this;
@@ -1741,9 +1861,9 @@ Page({
           confirmButtonText: activity.partShortMsg,
           cancelButtonText: '取消',
           success: result => {
-            console.log(result);
+            // console.log(result);
             if (result && result.confirm) {
-              that.gotoIndex();
+              gotoIndex();
             } else {
               // do something
             }
@@ -1761,16 +1881,16 @@ Page({
     let that = this;
     app.startLogin(
       function(res) {
-        console.log('startLogin success, ' + JSON.stringify(res));
+        // console.log('startLogin success, ' + JSON.stringify(res));
         my.showLoading();
         http
-          .post('/wuzhu//user/checkPartByPromotion', {
+          .post('/wuzhu/user/checkPartByPromotion', {
             channelNo: app.channelNo, // 渠道编号
             promotionNo: activity.promotionNo
           })
           .then(res => {
             my.hideLoading();
-            console.info('checkPartByPromotion res = ' + JSON.stringify(res));
+            // console.info('checkPartByPromotion res = ' + JSON.stringify(res));
             if (res.code === '00') {
               that.activityDispatch(activity);
             } else {
@@ -1799,7 +1919,7 @@ Page({
         partType: 'REC' // 手工主动领取，固定值
       })
       .then(res => {
-        console.info('queryCoupons res = ' + JSON.stringify(res));
+        // console.info('queryCoupons res = ' + JSON.stringify(res));
         if (res.code === '00') {
           if (res.data) {
             let data = res.data;
@@ -1825,7 +1945,7 @@ Page({
   },
   // 对优惠券进行分组
   setCouponList(data) {
-    console.log('setCouponList ', data);
+    // console.log('setCouponList ', data);
     let enCoupons = [];
     let disCoupons = [];
     let nIndex = 0;
@@ -1847,7 +1967,7 @@ Page({
           } else {
             nItem['operation'] = 'received';
           }
-          console.log('nIndex = ' + nIndex);
+          // console.log('nIndex = ' + nIndex);
           nItem['iIndex'] = nIndex++;
           enCoupons.push(nItem);
           break;
@@ -1874,14 +1994,14 @@ Page({
   },
   // 领取优惠券
   getCoupon(obj) {
-    console.log('getCoupon ', obj);
+    // console.log('getCoupon ', obj);
     if (obj.type !== 'button') {
       return;
     }
     let that = this;
     app.startLogin(
       function(res) {
-        console.log('startLogin success, ' + JSON.stringify(res));
+        // console.log('startLogin success, ' + JSON.stringify(res));
         if (!that.data.canGetCoupons) {
           return;
         }
@@ -1898,7 +2018,7 @@ Page({
             partType: 'REC' // 手工主动领取，固定值
           })
           .then(res => {
-            console.info('getCoupon res = ' + JSON.stringify(res));
+            // console.info('getCoupon res = ' + JSON.stringify(res));
             if (res.code === '00' && res.data && res.data.promotionInfoVO) {
               let promotionInfoVO = res.data.promotionInfoVO;
               my.showToast({

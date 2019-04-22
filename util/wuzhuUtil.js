@@ -244,3 +244,19 @@ export function goToMiniProgram(aliMiniStr) {
     console.log('navigateToMiniProgram error.' + JSON.stringify(error))
   }
 }
+
+// 跳转到首页
+export function gotoIndex() {
+  // 修改返回首页的方式。从外部链接直接进入详情,用navigateBack方法会无法返回首页
+  let currentPages = getCurrentPages().length;
+  console.log('gotoIndex currentPages = ' + currentPages);
+  if (currentPages <= 1) {
+    my.reLaunch({
+      url: '/pages/index/index'
+    });
+  } else {
+    my.switchTab({
+      url: '/pages/index/index'
+    });
+  }
+}

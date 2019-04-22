@@ -182,24 +182,24 @@
   padding: 15px 20px;
 }
 
-.fee-section3{
-	border-top: 1px solid #DDDDDD;
-	padding: 15px 20px;
+.fee-section3 {
+  border-top: 1px solid #dddddd;
+  padding: 15px 20px;
 }
 
 .insureEndTime {
   font-size: 24rpx;
-  margin-top: 14rpx
+  margin-top: 14rpx;
 }
-.flexBox{
-	display: flex;
+.flexBox {
+  display: flex;
   font-size: 28rpx;
-	justify-content: space-between;
-	margin-bottom: 30rpx;
-  align-items:baseline;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+  align-items: baseline;
   flex-wrap: wrap;
 }
-.flexRight{
+.flexRight {
   vertical-align: text-bottom;
 }
 .flexBox:last-child {
@@ -240,4 +240,16 @@
 
 .line-through {
   text-decoration: line-through;
+}
+
+.protocol {
+  margin-top: 11px;
+  padding: 40rpx 30rpx 0;
+}
+
+.protocolText {
+  display: block;
+  margin-bottom: 30rpx;
+  color: #1890ff;
+  text-align: right;
 }

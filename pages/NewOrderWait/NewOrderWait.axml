@@ -1,0 +1,28 @@
+<view class="order-result-page">
+  <!--图标面板-->
+  <view class="or-icon-plane">
+    <view class="icon-imagebox">
+      <image class="icon-image" src="{{ icon }}" mode="aspectFit" />
+    </view>
+    <!-- <view a:if="{{success}}"> -->
+      <view class="icon-label" >{{ title }}</view>
+      <view class="icon-label-gray">{{ msg }}</view>
+      <view class="icon-zima-branch" a:if="{{!showBtn}}">
+        <image class="zimalogo"  src="/image/orderSubmit/zhima_label2_3x.png" mode="aspectFit"/>
+      </view>
+    <!-- </view> -->
+
+  </view>
+  <view class="or-menu-plane" a:if="{{showBtn}}">
+    <view class="retry-box">
+      <button class="retry-btn" onTap="onRetry">重新下单</button>
+    </view>
+    <view class="go-home-box">
+      <button class="go-home-btn" onTap="onReturnHome">返回首页</button>
+    </view>
+  </view>
+  <!--租赁版权信息-->
+  <view class="or-copyright-plane">
+    <image class="copyright-icon" src="/image/orderSubmit/wuzhi_zhima2_3x.png" />
+  </view>
+</view>

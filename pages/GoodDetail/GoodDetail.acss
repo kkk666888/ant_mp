@@ -689,3 +689,7 @@
   font-size: 28rpx;
   color: #222;
 }
+
+.visible-no {
+  display: none;
+}
